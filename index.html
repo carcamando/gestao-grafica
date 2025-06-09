@@ -35,12 +35,11 @@
     <!-- Tela de Autenticação -->
     <div id="auth-container" class="flex items-center justify-center h-screen">
         <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-            <!-- Formulário de Login -->
             <form id="login-form">
-                <h2 class="text-2xl font-bold text-center">Login</h2>
+                <h2 class="text-2xl font-bold text-center">Acesso Restrito</h2>
                 <div class="mt-4">
-                    <label for="login-email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" id="login-email" name="email" required class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <label for="login-user" class="block text-sm font-medium text-gray-700">Usuário</label>
+                    <input type="text" id="login-user" name="user" required class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <div class="mt-4">
                     <label for="login-password" class="block text-sm font-medium text-gray-700">Senha</label>
@@ -49,30 +48,14 @@
                 <div class="mt-6">
                     <button type="submit" class="w-full px-4 py-2 font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Entrar</button>
                 </div>
-                <p class="mt-4 text-sm text-center text-gray-600">
-                    Não tem uma conta? <button type="button" id="show-register-btn" class="font-medium text-blue-600 hover:underline">Cadastre-se</button>
-                </p>
-            </form>
-
-            <!-- Formulário de Cadastro -->
-            <form id="register-form" class="hidden">
-                <h2 class="text-2xl font-bold text-center">Criar Conta</h2>
-                <div class="mt-4">
-                    <label for="register-email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" id="register-email" name="email" required class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div class="mt-4">
-                    <label for="register-password" class="block text-sm font-medium text-gray-700">Senha</label>
-                    <input type="password" id="register-password" name="password" required class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div class="mt-6">
-                    <button type="submit" class="w-full px-4 py-2 font-bold text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Criar Conta</button>
-                </div>
-                 <p class="mt-4 text-sm text-center text-gray-600">
-                    Já tem uma conta? <button type="button" id="show-login-btn" class="font-medium text-blue-600 hover:underline">Faça login</button>
-                </p>
             </form>
         </div>
+    </div>
+
+    <!-- Tela de Carregamento -->
+    <div id="loading-container" class="hidden flex-col items-center justify-center h-screen text-center p-4">
+        <p class="text-xl text-gray-600">Conectando ao banco de dados...</p>
+        <p id="loading-error" class="text-red-600 mt-2"></p>
     </div>
 
     <!-- Container Principal da Aplicação (escondido por padrão) -->
@@ -80,11 +63,7 @@
         <div class="container mx-auto p-4 md:p-8">
             <!-- Cabeçalho -->
             <header class="text-center mb-8 bg-white p-6 rounded-lg shadow-md">
-                <div class="flex justify-between items-center">
-                    <div></div> <!-- Espaçador -->
-                    <h1 class="text-3xl md:text-4xl font-bold text-gray-700">Sistema de Gestão Gráfica Traços Ltda</h1>
-                    <button id="logout-btn" class="bg-red-500 text-white font-bold py-1 px-3 rounded-lg hover:bg-red-600 text-sm">Sair</button>
-                </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-700">Sistema de Gestão Gráfica Traços Ltda</h1>
                 <div class="mt-4 flex items-center justify-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="text-green-600 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -107,7 +86,7 @@
                 <!-- Seção de Orçamentos -->
                 <section id="orcamentos" class="tab-content">
                     <div class="bg-white p-6 rounded-lg shadow-md">
-                        <h2 class="text-2xl font-bold mb-4 text-gray-700">Novo Orçamento</h2>
+                        <h2 id="orcamento-form-title" class="text-2xl font-bold mb-4 text-gray-700">Novo Orçamento</h2>
                         <form id="form-orcamento">
                             <div class="mb-4">
                                 <label for="orcamento-cliente" class="block text-sm font-medium text-gray-700">Cliente</label>
@@ -126,7 +105,7 @@
                             <h3 class="text-lg font-medium text-gray-800 mb-2">Itens do Orçamento</h3>
                             <div id="current-orcamento-items-container" class="border rounded-md min-h-[80px] p-2 mb-4 bg-gray-50"></div>
                             <div class="text-right text-xl font-bold mb-4">Total: <span id="current-orcamento-total">R$ 0,00</span></div>
-                            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Gerar Orçamento Final</button>
+                            <button id="submit-orcamento-btn" type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Gerar Orçamento Final</button>
                         </form>
                     </div>
                     <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
@@ -151,6 +130,10 @@
                             <div class="md:col-span-6"><button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Adicionar Cliente</button></div>
                         </form>
                         <h3 class="text-2xl font-bold mb-4 text-gray-700">Clientes Cadastrados</h3>
+                        <div class="mb-4">
+                            <label for="search-cliente-input" class="block text-sm font-medium text-gray-700">Pesquisar por Nome</label>
+                            <input type="text" id="search-cliente-input" placeholder="Digite o nome do cliente..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
                         <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telefone</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Endereço</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-clientes" class="bg-white divide-y"></tbody></table></div>
                     </div>
                 </section>
@@ -169,7 +152,7 @@
                     </div>
                     <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
                         <h3 class="text-2xl font-bold mb-4 text-gray-700">Produtos Cadastrados</h3>
-                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descrição</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantidade</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Valor Total</th></tr></thead><tbody id="lista-produtos" class="bg-white divide-y"></tbody></table></div>
+                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descrição</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantidade</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Valor Total</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-produtos" class="bg-white divide-y"></tbody></table></div>
                     </div>
                 </section>
             </main>
@@ -204,7 +187,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
       
         const firebaseConfig = {
@@ -220,52 +203,51 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         let userId = null;
-
+        
         const authContainer = document.getElementById('auth-container');
         const appContainer = document.getElementById('app-container');
         const loginForm = document.getElementById('login-form');
-        const registerForm = document.getElementById('register-form');
-        const showRegisterBtn = document.getElementById('show-register-btn');
-        const showLoginBtn = document.getElementById('show-login-btn');
-        const logoutBtn = document.getElementById('logout-btn');
-
-        showRegisterBtn.addEventListener('click', () => {
-            loginForm.classList.add('hidden');
-            registerForm.classList.remove('hidden');
-        });
-
-        showLoginBtn.addEventListener('click', () => {
-            registerForm.classList.add('hidden');
-            loginForm.classList.remove('hidden');
-        });
+        const loadingContainer = document.getElementById('loading-container');
+        const USUARIO_CORRETO = "Graficatracos";
+        const SENHA_CORRETA = "72641526";
 
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const email = loginForm.email.value;
+            const user = loginForm.user.value;
             const password = loginForm.password.value;
-            signInWithEmailAndPassword(auth, email, password)
-                .catch(error => alert(`Erro ao fazer login: ${error.message}`));
+
+            if (user === USUARIO_CORRETO && password === SENHA_CORRETA) {
+                authContainer.style.display = 'none';
+                loadingContainer.style.display = 'flex';
+                iniciarFirebase();
+            } else {
+                alert('Usuário ou senha incorretos!');
+            }
         });
 
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = registerForm.email.value;
-            const password = registerForm.password.value;
-            createUserWithEmailAndPassword(auth, email, password)
-                .catch(error => alert(`Erro ao criar conta: ${error.message}`));
-        });
-
-        logoutBtn.addEventListener('click', () => {
-            signOut(auth);
-        });
+        function iniciarFirebase() {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    userId = user.uid;
+                    loadingContainer.style.display = 'none';
+                    appContainer.style.display = 'block';
+                    runApp();
+                } else {
+                    signInAnonymously(auth).catch((error) => {
+                        loadingContainer.innerHTML = `<p class="text-red-600">Falha na conexão: ${error.message}. Verifique a configuração do Firebase.</p>`;
+                    });
+                }
+            });
+        }
 
         function runApp() {
             let clientes = [], produtos = [], orcamentos = [], currentItems = [];
-            let orcamentoCounter = 1, servicoCounter = 1, activeClientId = null;
+            let orcamentoCounter = 1, servicoCounter = 1, activeClientId = null, editingBudgetId = null;
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
             const formCliente = document.getElementById('form-cliente');
             const listaClientes = document.getElementById('lista-clientes');
+            const searchClienteInput = document.getElementById('search-cliente-input');
             const formProduto = document.getElementById('form-produto');
             const listaProdutos = document.getElementById('lista-produtos');
             const formOrcamento = document.getElementById('form-orcamento');
@@ -280,16 +262,16 @@
             const closeModalButton = document.getElementById('close-modal-button');
             const formServico = document.getElementById('form-servico');
             const listaServicosContainer = document.getElementById('lista-servicos-container');
-
-            const docRef = doc(db, "usuarios", userId);
+            const orcamentoFormTitle = document.getElementById('orcamento-form-title');
+            const submitOrcamentoBtn = document.getElementById('submit-orcamento-btn');
+            
+            const docRef = doc(db, "data", userId);
 
             const salvarDados = async () => {
                 const dataToSave = { clientes, produtos, orcamentos, orcamentoCounter, servicoCounter };
                 try {
                     await setDoc(docRef, dataToSave);
-                } catch (e) {
-                    console.error("Erro ao salvar dados: ", e);
-                }
+                } catch (e) { console.error("Erro ao salvar dados: ", e); }
             };
 
             const carregarDados = async () => {
@@ -303,9 +285,7 @@
                         orcamentoCounter = data.orcamentoCounter || 1;
                         servicoCounter = data.servicoCounter || 1;
                     }
-                } catch (e) {
-                    console.error("Erro ao carregar dados: ", e);
-                }
+                } catch (e) { console.error("Erro ao carregar dados: ", e); }
                 renderizarTudo();
             };
 
@@ -313,23 +293,29 @@
             const renderizarTudo = () => { renderizarClientes(); renderizarProdutos(); renderizarOrcamentos(); };
             const atualizarSelects = () => {
                 selectOrcamentoCliente.innerHTML = '<option value="" disabled selected>Selecione...</option>';
-                clientes.forEach((c, i) => selectOrcamentoCliente.add(new Option(c.nome, i)));
+                clientes.forEach((c, i) => selectOrcamentoCliente.add(new Option(c.nome, c.id)));
                 selectItemProduto.innerHTML = '<option value="" disabled selected>Selecione...</option>';
-                produtos.forEach((p, i) => selectItemProduto.add(new Option(p.nome, i)));
+                produtos.forEach((p, i) => selectItemProduto.add(new Option(p.nome, p.id)));
             };
 
             const renderizarClientes = () => {
-                listaClientes.innerHTML = clientes.length === 0 ? '<tr><td colspan="4" class="text-center py-4 text-gray-500">Nenhum cliente</td></tr>' : clientes.map(c => `<tr id="cliente-${c.id}" class="hover:bg-gray-50"><td class="px-6 py-4"><span class="data-view">${c.nome}</span><input type="text" value="${c.nome}" class="edit-view w-full rounded-md"></td><td class="px-6 py-4"><span class="data-view">${c.telefone}</span><input type="tel" value="${c.telefone}" class="edit-view w-full rounded-md"></td><td class="px-6 py-4"><span class="data-view">${[c.endereco, c.numero, c.cidade].filter(Boolean).join(', ')||'N/A'}</span><input type="email" value="${c.email||''}" class="edit-view w-full rounded-md" disabled></td><td class="px-6 py-4 text-sm font-medium"><div class="flex items-center space-x-2"><button data-id="${c.id}" class="manage-services-btn text-green-600 hover:text-green-900">Serviços</button><button data-id="${c.id}" class="edit-btn text-blue-600 hover:text-blue-900">Editar</button><button data-id="${c.id}" class="save-btn text-blue-600 hover:text-blue-900" style="display:none;">Salvar</button><button data-id="${c.id}" class="delete-btn text-red-600 hover:text-red-900">Deletar</button></div></td></tr>`).join('');
+                const searchTerm = searchClienteInput.value.toLowerCase();
+                const filteredClientes = clientes.filter(c => c.nome.toLowerCase().includes(searchTerm));
+
+                listaClientes.innerHTML = filteredClientes.length === 0 ? '<tr><td colspan="4" class="text-center py-4 text-gray-500">Nenhum cliente encontrado.</td></tr>' : filteredClientes.map(c => {
+                    const endereco = [c.endereco, c.numero, c.cidade].filter(Boolean).join(', ');
+                    return `<tr id="cliente-${c.id}" class="hover:bg-gray-50"><td class="px-6 py-4"><span class="data-view">${c.nome}</span><input type="text" value="${c.nome}" class="edit-view w-full rounded-md"></td><td class="px-6 py-4"><span class="data-view">${c.telefone}</span><input type="tel" value="${c.telefone}" class="edit-view w-full rounded-md"></td><td class="px-6 py-4"><span class="data-view">${endereco||'N/A'}</span></td><td class="px-6 py-4 text-sm font-medium"><div class="flex items-center space-x-2"><button data-id="${c.id}" class="manage-services-btn text-green-600 hover:text-green-900">Serviços</button><button data-id="${c.id}" class="edit-btn text-blue-600 hover:text-blue-900">Editar</button><button data-id="${c.id}" class="save-btn text-blue-600 hover:text-blue-900" style="display:none;">Salvar</button><button data-id="${c.id}" class="delete-btn text-red-600 hover:text-red-900">Deletar</button></div></td></tr>`
+                }).join('');
                 atualizarSelects();
             };
 
             const renderizarProdutos = () => {
-                listaProdutos.innerHTML = produtos.length === 0 ? '<tr><td colspan="4" class="text-center py-4 text-gray-500">Nenhum produto</td></tr>' : produtos.map(p => `<tr class="hover:bg-gray-50"><td class="px-6 py-4">${p.nome}</td><td class="px-6 py-4">${p.descricao||'N/A'}</td><td class="px-6 py-4">${p.quantidade||'N/A'}</td><td class="px-6 py-4">${p.valor>0?formatCurrency(p.valor):'N/A'}</td></tr>`).join('');
+                listaProdutos.innerHTML = produtos.length === 0 ? '<tr><td colspan="5" class="text-center py-4 text-gray-500">Nenhum produto</td></tr>' : produtos.map(p => `<tr id="produto-${p.id}" class="hover:bg-gray-50"><td class="px-6 py-4"><span class="data-view">${p.nome}</span><input type="text" value="${p.nome}" class="edit-view w-full rounded-md"></td><td class="px-6 py-4"><span class="data-view">${p.descricao||'N/A'}</span><textarea class="edit-view w-full rounded-md">${p.descricao||''}</textarea></td><td class="px-6 py-4"><span class="data-view">${p.quantidade||'N/A'}</span><input type="number" value="${p.quantidade}" class="edit-view w-full rounded-md"></td><td class="px-6 py-4"><span class="data-view">${p.valor>0?formatCurrency(p.valor):'N/A'}</span><input type="number" step="0.01" value="${p.valor}" class="edit-view w-full rounded-md"></td><td class="px-6 py-4"><div class="flex items-center space-x-2"><button data-id="${p.id}" class="edit-produto-btn text-blue-600 hover:text-blue-900">Editar</button><button data-id="${p.id}" class="save-produto-btn text-blue-600 hover:text-blue-900" style="display:none;">Salvar</button><button data-id="${p.id}" class="delete-produto-btn text-red-600 hover:text-red-900">Excluir</button></div></td></tr>`).join('');
                 atualizarSelects();
             };
             
             const renderizarOrcamentos = () => {
-                listaOrcamentos.innerHTML = orcamentos.length === 0 ? '<tr><td colspan="6" class="text-center py-4 text-gray-500">Nenhum orçamento</td></tr>' : orcamentos.map(orc => `<tr class="hover:bg-gray-50"><td class="px-6 py-4">${String(orc.id).padStart(4,'0')}</td><td class="px-6 py-4">${orc.cliente.nome}</td><td class="px-6 py-4">${orc.items.map(i=>i.nome).join(', ')}</td><td class="px-6 py-4">${formatCurrency(orc.total)}</td><td class="px-6 py-4">${orc.data}</td><td class="px-6 py-4"><button data-id="${orc.id}" class="pdf-orcamento-btn text-red-600 hover:text-red-900">PDF</button></td></tr>`).join('');
+                listaOrcamentos.innerHTML = orcamentos.length === 0 ? '<tr><td colspan="6" class="text-center py-4 text-gray-500">Nenhum orçamento</td></tr>' : orcamentos.map(orc => `<tr class="hover:bg-gray-50"><td class="px-6 py-4">${String(orc.id).padStart(4,'0')}</td><td class="px-6 py-4">${orc.cliente.nome}</td><td class="px-6 py-4">${orc.items.map(i=>i.nome).join(', ')}</td><td class="px-6 py-4">${formatCurrency(orc.total)}</td><td class="px-6 py-4">${orc.data}</td><td class="px-6 py-4"><div class="flex space-x-2"><button data-id="${orc.id}" class="edit-orcamento-btn text-blue-600 hover:text-blue-900">Editar</button><button data-id="${orc.id}" class="delete-orcamento-btn text-red-600 hover:text-red-900">Excluir</button><button data-id="${orc.id}" class="pdf-orcamento-btn text-purple-600 hover:text-purple-900">PDF</button></div></td></tr>`).join('');
             };
             
             const renderizarCurrentItems = () => {
@@ -340,20 +326,22 @@
             tabButtons.forEach(button => button.addEventListener('click', () => { tabButtons.forEach(btn => btn.classList.remove('active')); button.classList.add('active'); tabContents.forEach(content => content.style.display = 'none'); document.getElementById(button.dataset.target).style.display = 'block'; }));
 
             formCliente.addEventListener('submit', e => { e.preventDefault(); clientes.push({ id: Date.now(), nome: e.target.elements['cliente-nome'].value, telefone: e.target.elements['cliente-telefone'].value, email: e.target.elements['cliente-email'].value, endereco: e.target.elements['cliente-endereco'].value, numero: e.target.elements['cliente-numero'].value, cep: e.target.elements['cliente-cep'].value, cidade: e.target.elements['cliente-cidade'].value, uf: e.target.elements['cliente-uf'].value, servicos: [] }); salvarDados(); renderizarClientes(); formCliente.reset(); });
-            formProduto.addEventListener('submit', e => { e.preventDefault(); produtos.push({ nome: e.target.elements['produto-nome'].value, descricao: e.target.elements['produto-descricao'].value, quantidade: parseInt(e.target.elements['produto-quantidade'].value, 10) || 0, valor: parseFloat(e.target.elements['produto-valor'].value) || 0 }); salvarDados(); renderizarProdutos(); formProduto.reset(); });
+            formProduto.addEventListener('submit', e => { e.preventDefault(); produtos.push({ id: Date.now(), nome: e.target.elements['produto-nome'].value, descricao: e.target.elements['produto-descricao'].value, quantidade: parseInt(e.target.elements['produto-quantidade'].value, 10) || 0, valor: parseFloat(e.target.elements['produto-valor'].value) || 0 }); salvarDados(); renderizarProdutos(); formProduto.reset(); });
+
+            searchClienteInput.addEventListener('keyup', renderizarClientes);
 
             listaClientes.addEventListener('click', e => {
                 const btn = e.target.closest('button'); if (!btn) return;
                 const id = parseInt(btn.dataset.id); const row = document.getElementById(`cliente-${id}`);
                 if (btn.classList.contains('edit-btn')) { row.querySelectorAll('.data-view').forEach(el => el.style.display = 'none'); row.querySelectorAll('td:not(:nth-child(3)):not(:last-child) .edit-view').forEach(el => el.style.display = 'block'); btn.style.display = 'none'; row.querySelector('.save-btn').style.display = 'inline-block';
-                } else if (btn.classList.contains('save-btn')) { const cliente = clientes.find(c => c.id === id); cliente.nome = row.querySelector('input[type="text"]').value; cliente.telefone = row.querySelector('input[type="tel"]').value; cliente.email = row.querySelector('input[type="email"]').value; salvarDados(); renderizarClientes();
+                } else if (btn.classList.contains('save-btn')) { const cliente = clientes.find(c => c.id === id); cliente.nome = row.querySelector('input[type="text"]').value; cliente.telefone = row.querySelector('input[type="tel"]').value; salvarDados(); renderizarClientes();
                 } else if (btn.classList.contains('delete-btn')) { if (confirm('Tem certeza?')) { clientes = clientes.filter(c => c.id !== id); orcamentos = orcamentos.filter(o => o.cliente.id !== id); salvarDados(); renderizarClientes(); renderizarOrcamentos(); }
                 } else if (btn.classList.contains('manage-services-btn')) { activeClientId = id; const cliente = clientes.find(c => c.id === id); modalTitle.textContent = `Serviços de ${cliente.nome}`; renderizarServicos(id); servicosModal.classList.add('visible'); }
             });
 
             selectItemProduto.addEventListener('change', e => {
                 if (e.target.value === "") return;
-                const p = produtos[e.target.value];
+                const p = produtos.find(p => p.id === parseInt(e.target.value));
                 if (p) {
                     document.getElementById('item-descricao').value = p.descricao || '';
                     document.getElementById('item-quantidade').value = p.quantidade || 1;
@@ -364,7 +352,7 @@
 
             addItemBtn.addEventListener('click', () => {
                 const pIndex = selectItemProduto.value; if (pIndex === "") { alert('Selecione um produto.'); return; }
-                const produto = produtos[pIndex]; const quantidade = parseInt(document.getElementById('item-quantidade').value, 10); const valorUnitario = parseFloat(document.getElementById('item-valor-unitario').value);
+                const produto = produtos.find(p => p.id === parseInt(pIndex)); const quantidade = parseInt(document.getElementById('item-quantidade').value, 10); const valorUnitario = parseFloat(document.getElementById('item-valor-unitario').value);
                 if (!quantidade || isNaN(valorUnitario)) { alert('Preencha a quantidade e o valor corretamente.'); return; }
                 currentItems.push({ nome: produto.nome, descricao: document.getElementById('item-descricao').value, quantidade: quantidade, valorUnitario: valorUnitario, valorTotal: quantidade * valorUnitario });
                 renderizarCurrentItems();
@@ -373,8 +361,55 @@
             
             currentItemsContainer.addEventListener('click', e => { const btn = e.target.closest('.remove-item-btn'); if(btn) { currentItems.splice(btn.dataset.index, 1); renderizarCurrentItems(); } });
 
-            formOrcamento.addEventListener('submit', e => { e.preventDefault(); const clienteIndex = selectOrcamentoCliente.value; if (clienteIndex === "" || currentItems.length === 0) { alert("Selecione um cliente e adicione itens."); return; } orcamentos.push({ id: orcamentoCounter++, cliente: clientes[clienteIndex], items: [...currentItems], total: currentItems.reduce((acc, item) => acc + item.valorTotal, 0), data: new Date().toLocaleDateString('pt-BR') }); currentItems = []; renderizarOrcamentos(); renderizarCurrentItems(); salvarDados(); formOrcamento.reset(); atualizarSelects(); });
-            listaOrcamentos.addEventListener('click', e => { const btn = e.target.closest('.pdf-orcamento-btn'); if (btn) { const orcamento = orcamentos.find(o => o.id === parseInt(btn.dataset.id)); if (orcamento) gerarPDFOrcamento(orcamento); } });
+            formOrcamento.addEventListener('submit', e => {
+                e.preventDefault(); const clienteId = selectOrcamentoCliente.value; if (clienteId === "" || currentItems.length === 0) { alert("Selecione um cliente e adicione itens."); return; }
+                const cliente = clientes.find(c => c.id === parseInt(clienteId));
+                if (editingBudgetId) {
+                    const orcamentoIndex = orcamentos.findIndex(o => o.id === editingBudgetId);
+                    orcamentos[orcamentoIndex] = { ...orcamentos[orcamentoIndex], cliente: cliente, items: [...currentItems], total: currentItems.reduce((acc, item) => acc + item.valorTotal, 0) };
+                    editingBudgetId = null;
+                    orcamentoFormTitle.textContent = "Novo Orçamento";
+                    submitOrcamentoBtn.textContent = "Gerar Orçamento Final";
+                    submitOrcamentoBtn.classList.replace('bg-yellow-600', 'bg-blue-600');
+                } else {
+                    orcamentos.push({ id: orcamentoCounter++, cliente: cliente, items: [...currentItems], total: currentItems.reduce((acc, item) => acc + item.valorTotal, 0), data: new Date().toLocaleDateString('pt-BR') });
+                }
+                currentItems = []; renderizarOrcamentos(); renderizarCurrentItems(); salvarDados(); formOrcamento.reset(); atualizarSelects();
+            });
+
+            listaOrcamentos.addEventListener('click', e => {
+                const btn = e.target.closest('button'); if (!btn) return;
+                const id = parseInt(btn.dataset.id);
+                if(btn.classList.contains('pdf-orcamento-btn')) { const orcamento = orcamentos.find(o => o.id === id); if (orcamento) gerarPDFOrcamento(orcamento); }
+                else if (btn.classList.contains('delete-orcamento-btn')) { if(confirm('Excluir este orçamento?')) { orcamentos = orcamentos.filter(o => o.id !== id); salvarDados(); renderizarOrcamentos(); } }
+                else if(btn.classList.contains('edit-orcamento-btn')) {
+                    const orcamento = orcamentos.find(o => o.id === id);
+                    if(orcamento) {
+                        editingBudgetId = orcamento.id;
+                        selectOrcamentoCliente.value = orcamento.cliente.id;
+                        currentItems = [...orcamento.items];
+                        renderizarCurrentItems();
+                        orcamentoFormTitle.textContent = `Editando Orçamento Nº ${String(id).padStart(4,'0')}`;
+                        submitOrcamentoBtn.textContent = "Salvar Alterações";
+                        submitOrcamentoBtn.classList.replace('bg-blue-600', 'bg-yellow-600');
+                        window.scrollTo(0, 0);
+                    }
+                }
+            });
+
+            listaProdutos.addEventListener('click', e => {
+                const btn = e.target.closest('button'); if (!btn) return;
+                const id = parseInt(btn.dataset.id); const row = document.getElementById(`produto-${id}`);
+                if (btn.classList.contains('edit-produto-btn')) { row.querySelectorAll('.data-view').forEach(el => el.style.display = 'none'); row.querySelectorAll('.edit-view').forEach(el => el.style.display = 'block'); btn.style.display = 'none'; row.querySelector('.save-produto-btn').style.display = 'inline-block';
+                } else if (btn.classList.contains('save-produto-btn')) {
+                    const produto = produtos.find(p => p.id === id);
+                    produto.nome = row.querySelector('input[type="text"]').value;
+                    produto.descricao = row.querySelector('textarea').value;
+                    produto.quantidade = parseInt(row.querySelectorAll('input[type="number"]')[0].value, 10);
+                    produto.valor = parseFloat(row.querySelectorAll('input[type="number"]')[1].value);
+                    salvarDados(); renderizarProdutos();
+                } else if (btn.classList.contains('delete-produto-btn')) { if (confirm('Tem certeza?')) { produtos = produtos.filter(p => p.id !== id); salvarDados(); renderizarProdutos(); } }
+            });
             
             closeModalButton.addEventListener('click', () => servicosModal.classList.remove('visible'));
             

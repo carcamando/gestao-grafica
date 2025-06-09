@@ -9,17 +9,164 @@
     <!-- Bibliotecas para gerar PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    
-    <!-- SDKs do Firebase -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-button.active { border-bottom-color: #1D4ED8; color: #1D4ED8; font-weight: 600; }
+        .modal-backdrop {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
+            z-index: 50;
+        }
+        .modal-backdrop.visible { opacity: 1; visibility: visible; }
+        .modal-content {
+            background-color: white; padding: 1.5rem; border-radius: 0.5rem;
+            width: 90%; max-width: 800px;
+            max-height: 90vh; overflow-y: auto;
+            transform: scale(0.95); transition: transform 0.3s;
+        }
+        .modal-backdrop.visible .modal-content { transform: scale(1); }
+        .edit-view { display: none; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Tela de Carregamento -->
+    <div id="loading-container" class="flex flex-col items-center justify-center h-screen text-center p-4">
+        <p class="text-xl text-gray-600">Conectando ao sistema...</p>
+        <p id="loading-error" class="text-red-600 mt-2"></p>
+    </div>
+
+    <!-- Container Principal da Aplicação (escondido por padrão) -->
+    <div id="app-container" class="hidden">
+        <div class="container mx-auto p-4 md:p-8">
+            <!-- Cabeçalho -->
+            <header class="text-center mb-8 bg-white p-6 rounded-lg shadow-md">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-700">Sistema de Gestão Gráfica Traços Ltda</h1>
+                <div class="mt-4 flex items-center justify-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-green-600 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <p class="text-xl font-semibold text-green-600">(54) 99617-2271</p>
+                </div>
+            </header>
+
+            <!-- Navegação das Abas -->
+            <div class="mb-6 border-b border-gray-300">
+                <nav class="flex flex-wrap -mb-px">
+                    <button class="tab-button py-4 px-6 border-b-2 border-transparent text-lg text-gray-500 hover:text-blue-600 focus:outline-none active" data-target="orcamentos">Orçamentos</button>
+                    <button class="tab-button py-4 px-6 border-b-2 border-transparent text-lg text-gray-500 hover:text-blue-600 focus:outline-none" data-target="clientes">Clientes</button>
+                    <button class="tab-button py-4 px-6 border-b-2 border-transparent text-lg text-gray-500 hover:text-blue-600 focus:outline-none" data-target="produtos">Produtos</button>
+                </nav>
+            </div>
+
+            <!-- Conteúdo das Abas -->
+            <main>
+                <!-- Seção de Orçamentos -->
+                <section id="orcamentos" class="tab-content">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold mb-4 text-gray-700">Novo Orçamento</h2>
+                        <form id="form-orcamento">
+                            <div class="mb-4">
+                                <label for="orcamento-cliente" class="block text-sm font-medium text-gray-700">Cliente</label>
+                                <select id="orcamento-cliente" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></select>
+                            </div>
+                            <fieldset class="border p-4 rounded-md mb-4">
+                                <legend class="text-lg font-medium text-gray-800 px-2">Adicionar Itens</legend>
+                                <div class="grid grid-cols-1 md:grid-cols-12 gap-4" id="form-item-container">
+                                    <div class="md:col-span-4"><label for="item-produto" class="block text-sm font-medium">Produto</label><select id="item-produto" class="mt-1 block w-full rounded-md"></select></div>
+                                    <div class="md:col-span-8"><label for="item-descricao" class="block text-sm font-medium">Descrição</label><input type="text" id="item-descricao" class="mt-1 block w-full rounded-md"></div>
+                                    <div class="md:col-span-4"><label for="item-quantidade" class="block text-sm font-medium">Qtd.</label><input type="number" id="item-quantidade" min="1" class="mt-1 block w-full rounded-md"></div>
+                                    <div class="md:col-span-4"><label for="item-valor-unitario" class="block text-sm font-medium">Valor Unit. (R$)</label><input type="number" step="0.01" id="item-valor-unitario" min="0" class="mt-1 block w-full rounded-md"></div>
+                                    <div class="md:col-span-4 flex items-end"><button type="button" id="add-item-btn" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Adicionar</button></div>
+                                </div>
+                            </fieldset>
+                            <h3 class="text-lg font-medium text-gray-800 mb-2">Itens do Orçamento</h3>
+                            <div id="current-orcamento-items-container" class="border rounded-md min-h-[80px] p-2 mb-4 bg-gray-50"></div>
+                            <div class="text-right text-xl font-bold mb-4">Total: <span id="current-orcamento-total">R$ 0,00</span></div>
+                            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Gerar Orçamento Final</button>
+                        </form>
+                    </div>
+                    <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-700">Orçamentos Gerados</h3>
+                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nº</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Itens</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Valor Total</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-orcamentos" class="bg-white divide-y"></tbody></table></div>
+                    </div>
+                </section>
+
+                <!-- Seção de Clientes -->
+                <section id="clientes" class="tab-content" style="display: none;">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold mb-4 text-gray-700">Novo Cliente</h2>
+                        <form id="form-cliente" class="grid grid-cols-1 md:grid-cols-6 gap-4 border-b pb-6 mb-6">
+                            <div class="md:col-span-3"><label for="cliente-nome" class="block text-sm font-medium">Nome</label><input type="text" id="cliente-nome" required class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-3"><label for="cliente-telefone" class="block text-sm font-medium">Telefone/WhatsApp</label><input type="tel" id="cliente-telefone" required class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-6"><label for="cliente-email" class="block text-sm font-medium">Email (Opcional)</label><input type="email" id="cliente-email" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-4"><label for="cliente-endereco" class="block text-sm font-medium">Endereço</label><input type="text" id="cliente-endereco" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-2"><label for="cliente-numero" class="block text-sm font-medium">Número</label><input type="text" id="cliente-numero" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-2"><label for="cliente-cep" class="block text-sm font-medium">CEP</label><input type="text" id="cliente-cep" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-3"><label for="cliente-cidade" class="block text-sm font-medium">Cidade</label><input type="text" id="cliente-cidade" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-1"><label for="cliente-uf" class="block text-sm font-medium">UF</label><input type="text" id="cliente-uf" maxlength="2" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-6"><button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Adicionar Cliente</button></div>
+                        </form>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-700">Clientes Cadastrados</h3>
+                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telefone</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Endereço</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-clientes" class="bg-white divide-y"></tbody></table></div>
+                    </div>
+                </section>
+
+                <!-- Seção de Produtos -->
+                <section id="produtos" class="tab-content" style="display: none;">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold mb-4 text-gray-700">Novo Produto</h2>
+                        <form id="form-produto" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div><label for="produto-nome" class="block text-sm font-medium">Nome do Produto</label><input type="text" id="produto-nome" required class="mt-1 block w-full rounded-md" placeholder="Cartão de Visita"></div>
+                            <div><label for="produto-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" id="produto-quantidade" min="1" class="mt-1 block w-full rounded-md" placeholder="500"></div>
+                            <div><label for="produto-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" id="produto-valor" min="0" class="mt-1 block w-full rounded-md" placeholder="99.90"></div>
+                            <div class="md:col-span-3"><label for="produto-descricao" class="block text-sm font-medium">Descrição</label><textarea id="produto-descricao" rows="2" class="mt-1 block w-full rounded-md" placeholder="Couchê 300g, 4x4 cores..."></textarea></div>
+                            <div class="md:col-span-3"><button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Adicionar Produto</button></div>
+                        </form>
+                    </div>
+                    <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-700">Produtos Cadastrados</h3>
+                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descrição</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantidade</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Valor Total</th></tr></thead><tbody id="lista-produtos" class="bg-white divide-y"></tbody></table></div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal para Gerenciar Serviços do Cliente -->
+    <div id="servicos-modal" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="modal-title" class="text-2xl font-bold"></h2>
+                <div class="flex items-center">
+                     <button id="gerar-relatorio-servicos-btn" class="bg-purple-600 text-white font-bold py-1 px-3 rounded-lg hover:bg-purple-700 text-sm" style="display: none;">Gerar Relatório</button>
+                     <button id="close-modal-button" class="text-3xl font-bold ml-4">&times;</button>
+                </div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                <h3 class="text-xl font-bold mb-3">Adicionar Novo Serviço</h3>
+                <form id="form-servico" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="md:col-span-3"><label for="servico-descricao-input" class="block text-sm font-medium">Serviço/Descrição</label><input type="text" id="servico-descricao-input" required class="mt-1 block w-full rounded-md"></div>
+                    <div><label for="servico-data" class="block text-sm font-medium">Data</label><input type="date" id="servico-data" required class="mt-1 block w-full rounded-md"></div>
+                    <div><label for="servico-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" min="1" id="servico-quantidade" required class="mt-1 block w-full rounded-md"></div>
+                    <div><label for="servico-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" min="0" id="servico-valor" required class="mt-1 block w-full rounded-md"></div>
+                    <div class="md:col-span-3"><label for="servico-anexo" class="block text-sm font-medium">Anexar Arquivo</label><input type="file" id="servico-anexo" class="mt-1 block w-full text-sm"></div>
+                    <div class="md:col-span-3"><button type="submit" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Adicionar Serviço</button></div>
+                </form>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Serviços Cadastrados</h3>
+            <div id="lista-servicos-container" class="overflow-x-auto"></div>
+        </div>
+    </div>
+
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
       
         // --- CONFIGURAÇÃO DO FIREBASE ---
-        // TODO: Adicione aqui a configuração do seu projeto Firebase
-        // Você pode encontrar isso nas configurações do seu projeto no console do Firebase.
         const firebaseConfig = {
             apiKey: "AIzaSyBlcb66W1kyFts9yvwim3bLHq6ctstQOak",
             authDomain: "sistema-gestao-grafica.firebaseapp.com",
@@ -29,14 +176,15 @@
             appId: "1:896118171238:web:90eb4dea6dfc7cb195efa7"
         };
       
-        // Inicializa o Firebase e os serviços
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        let userId = null; // ID do usuário será definido após o login
+        let userId = null;
 
-        // --- LÓGICA PRINCIPAL DA APLICAÇÃO ---
-        // Esta função só roda depois que o usuário está autenticado
+        const loadingContainer = document.getElementById('loading-container');
+        const loadingError = document.getElementById('loading-error');
+        const appContainer = document.getElementById('app-container');
+
         function runApp() {
             // --- VARIÁVEIS GLOBAIS ---
             let clientes = [], produtos = [], orcamentos = [], currentItems = [];
@@ -62,23 +210,16 @@
             const formServico = document.getElementById('form-servico');
             const listaServicosContainer = document.getElementById('lista-servicos-container');
 
-            // --- PERSISTÊNCIA DE DADOS (Firestore) ---
             const docRef = doc(db, "usuarios", userId);
 
             const salvarDados = async () => {
-                const dataToSave = {
-                    clientes,
-                    produtos,
-                    orcamentos,
-                    orcamentoCounter,
-                    servicoCounter
-                };
+                const dataToSave = { clientes, produtos, orcamentos, orcamentoCounter, servicoCounter };
                 try {
                     await setDoc(docRef, dataToSave);
                     console.log("Dados salvos na nuvem com sucesso!");
                 } catch (e) {
                     console.error("Erro ao salvar dados: ", e);
-                    alert("Não foi possível salvar os dados na nuvem. Verifique sua conexão ou a configuração do Firebase.");
+                    alert("Não foi possível salvar os dados na nuvem.");
                 }
             };
 
@@ -92,25 +233,17 @@
                         orcamentos = data.orcamentos || [];
                         orcamentoCounter = data.orcamentoCounter || 1;
                         servicoCounter = data.servicoCounter || 1;
-                        console.log("Dados carregados da nuvem.");
                     } else {
-                        console.log("Nenhum dado encontrado na nuvem. Começando do zero.");
-                        // O documento será criado na primeira vez que salvarDados() for chamado.
+                        console.log("Nenhum dado encontrado na nuvem.");
                     }
                 } catch (e) {
                     console.error("Erro ao carregar dados: ", e);
-                    alert("Não foi possível carregar os dados da nuvem. O aplicativo pode não funcionar corretamente.");
                 }
                 renderizarTudo();
             };
 
-            // --- RENDERIZAÇÃO E FORMATAÇÃO ---
             const formatCurrency = (value) => `R$ ${value.toFixed(2).replace('.', ',')}`;
-            const renderizarTudo = () => {
-                renderizarClientes();
-                renderizarProdutos();
-                renderizarOrcamentos();
-            };
+            const renderizarTudo = () => { renderizarClientes(); renderizarProdutos(); renderizarOrcamentos(); };
             const atualizarSelects = () => {
                 selectOrcamentoCliente.innerHTML = '<option value="" disabled selected>Selecione...</option>';
                 clientes.forEach((c, i) => selectOrcamentoCliente.add(new Option(c.nome, i)));
@@ -140,75 +273,18 @@
                 currentTotalSpan.textContent = formatCurrency(currentItems.reduce((acc, item) => acc + item.valorTotal, 0));
             };
             
-            // --- LÓGICA GERAL ---
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    tabContents.forEach(content => content.style.display = 'none');
-                    document.getElementById(button.dataset.target).style.display = 'block';
-                });
-            });
+            tabButtons.forEach(button => button.addEventListener('click', () => { tabButtons.forEach(btn => btn.classList.remove('active')); button.classList.add('active'); tabContents.forEach(content => content.style.display = 'none'); document.getElementById(button.dataset.target).style.display = 'block'; }));
 
-            formCliente.addEventListener('submit', e => {
-                e.preventDefault();
-                clientes.push({ 
-                    id: Date.now(), 
-                    nome: e.target.elements['cliente-nome'].value, 
-                    telefone: e.target.elements['cliente-telefone'].value, 
-                    email: e.target.elements['cliente-email'].value, 
-                    endereco: e.target.elements['cliente-endereco'].value,
-                    numero: e.target.elements['cliente-numero'].value,
-                    cep: e.target.elements['cliente-cep'].value,
-                    cidade: e.target.elements['cliente-cidade'].value,
-                    uf: e.target.elements['cliente-uf'].value,
-                    servicos: [] 
-                });
-                salvarDados();
-                renderizarClientes();
-                formCliente.reset();
-            });
-
-            formProduto.addEventListener('submit', e => {
-                e.preventDefault();
-                produtos.push({ nome: e.target.elements['produto-nome'].value, descricao: e.target.elements['produto-descricao'].value, quantidade: parseInt(e.target.elements['produto-quantidade'].value, 10) || 0, valor: parseFloat(e.target.elements['produto-valor'].value) || 0 });
-                salvarDados();
-                renderizarProdutos();
-                formProduto.reset();
-            });
+            formCliente.addEventListener('submit', e => { e.preventDefault(); clientes.push({ id: Date.now(), nome: e.target.elements['cliente-nome'].value, telefone: e.target.elements['cliente-telefone'].value, email: e.target.elements['cliente-email'].value, endereco: e.target.elements['cliente-endereco'].value, numero: e.target.elements['cliente-numero'].value, cep: e.target.elements['cliente-cep'].value, cidade: e.target.elements['cliente-cidade'].value, uf: e.target.elements['cliente-uf'].value, servicos: [] }); salvarDados(); renderizarClientes(); formCliente.reset(); });
+            formProduto.addEventListener('submit', e => { e.preventDefault(); produtos.push({ nome: e.target.elements['produto-nome'].value, descricao: e.target.elements['produto-descricao'].value, quantidade: parseInt(e.target.elements['produto-quantidade'].value, 10) || 0, valor: parseFloat(e.target.elements['produto-valor'].value) || 0 }); salvarDados(); renderizarProdutos(); formProduto.reset(); });
 
             listaClientes.addEventListener('click', e => {
-                const btn = e.target.closest('button');
-                if (!btn) return;
-                const id = parseInt(btn.dataset.id);
-                const row = document.getElementById(`cliente-${id}`);
-                if (btn.classList.contains('edit-btn')) {
-                    row.querySelectorAll('.data-view').forEach(el => el.style.display = 'none');
-                    row.querySelectorAll('td:not(:nth-child(3)):not(:last-child) .edit-view').forEach(el => el.style.display = 'block');
-                    btn.style.display = 'none';
-                    row.querySelector('.save-btn').style.display = 'inline-block';
-                } else if (btn.classList.contains('save-btn')) {
-                    const cliente = clientes.find(c => c.id === id);
-                    cliente.nome = row.querySelector('input[type="text"]').value;
-                    cliente.telefone = row.querySelector('input[type="tel"]').value;
-                    cliente.email = row.querySelector('input[type="email"]').value;
-                    salvarDados();
-                    renderizarClientes();
-                } else if (btn.classList.contains('delete-btn')) {
-                    if (confirm('Tem certeza?')) {
-                        clientes = clientes.filter(c => c.id !== id);
-                        orcamentos = orcamentos.filter(o => o.cliente.id !== id);
-                        salvarDados();
-                        renderizarClientes();
-                        renderizarOrcamentos();
-                    }
-                } else if (btn.classList.contains('manage-services-btn')) {
-                    activeClientId = id;
-                    const cliente = clientes.find(c => c.id === id);
-                    modalTitle.textContent = `Serviços de ${cliente.nome}`;
-                    renderizarServicos(id);
-                    servicosModal.classList.add('visible');
-                }
+                const btn = e.target.closest('button'); if (!btn) return;
+                const id = parseInt(btn.dataset.id); const row = document.getElementById(`cliente-${id}`);
+                if (btn.classList.contains('edit-btn')) { row.querySelectorAll('.data-view').forEach(el => el.style.display = 'none'); row.querySelectorAll('td:not(:nth-child(3)):not(:last-child) .edit-view').forEach(el => el.style.display = 'block'); btn.style.display = 'none'; row.querySelector('.save-btn').style.display = 'inline-block';
+                } else if (btn.classList.contains('save-btn')) { const cliente = clientes.find(c => c.id === id); cliente.nome = row.querySelector('input[type="text"]').value; cliente.telefone = row.querySelector('input[type="tel"]').value; cliente.email = row.querySelector('input[type="email"]').value; salvarDados(); renderizarClientes();
+                } else if (btn.classList.contains('delete-btn')) { if (confirm('Tem certeza?')) { clientes = clientes.filter(c => c.id !== id); orcamentos = orcamentos.filter(o => o.cliente.id !== id); salvarDados(); renderizarClientes(); renderizarOrcamentos(); }
+                } else if (btn.classList.contains('manage-services-btn')) { activeClientId = id; const cliente = clientes.find(c => c.id === id); modalTitle.textContent = `Serviços de ${cliente.nome}`; renderizarServicos(id); servicosModal.classList.add('visible'); }
             });
 
             selectItemProduto.addEventListener('change', e => {
@@ -223,58 +299,19 @@
             });
 
             addItemBtn.addEventListener('click', () => {
-                const pIndex = selectItemProduto.value;
-                if (pIndex === "") { alert('Selecione um produto.'); return; }
-                const produto = produtos[pIndex];
-                const quantidade = parseInt(document.getElementById('item-quantidade').value, 10);
-                const valorUnitario = parseFloat(document.getElementById('item-valor-unitario').value);
-                
+                const pIndex = selectItemProduto.value; if (pIndex === "") { alert('Selecione um produto.'); return; }
+                const produto = produtos[pIndex]; const quantidade = parseInt(document.getElementById('item-quantidade').value, 10); const valorUnitario = parseFloat(document.getElementById('item-valor-unitario').value);
                 if (!quantidade || isNaN(valorUnitario)) { alert('Preencha a quantidade e o valor corretamente.'); return; }
-                
-                currentItems.push({ 
-                    nome: produto.nome, 
-                    descricao: document.getElementById('item-descricao').value, 
-                    quantidade: quantidade, 
-                    valorUnitario: valorUnitario,
-                    valorTotal: quantidade * valorUnitario
-                });
+                currentItems.push({ nome: produto.nome, descricao: document.getElementById('item-descricao').value, quantidade: quantidade, valorUnitario: valorUnitario, valorTotal: quantidade * valorUnitario });
                 renderizarCurrentItems();
-                document.getElementById('form-item-container').querySelectorAll('input, select').forEach(el => {
-                    if (el.tagName === 'SELECT') {
-                        el.selectedIndex = 0;
-                    } else {
-                        el.value = '';
-                    }
-                });
+                document.getElementById('form-item-container').querySelectorAll('input, select').forEach(el => { if (el.tagName === 'SELECT') { el.selectedIndex = 0; } else { el.value = ''; } });
             });
             
-            currentItemsContainer.addEventListener('click', e => {
-                const btn = e.target.closest('.remove-item-btn');
-                if(btn) { currentItems.splice(btn.dataset.index, 1); renderizarCurrentItems(); }
-            });
+            currentItemsContainer.addEventListener('click', e => { const btn = e.target.closest('.remove-item-btn'); if(btn) { currentItems.splice(btn.dataset.index, 1); renderizarCurrentItems(); } });
 
-            formOrcamento.addEventListener('submit', e => {
-                e.preventDefault();
-                const clienteIndex = selectOrcamentoCliente.value;
-                if (clienteIndex === "" || currentItems.length === 0) { alert("Selecione um cliente e adicione itens."); return; }
-                orcamentos.push({ id: orcamentoCounter++, cliente: clientes[clienteIndex], items: [...currentItems], total: currentItems.reduce((acc, item) => acc + item.valorTotal, 0), data: new Date().toLocaleDateString('pt-BR') });
-                currentItems = [];
-                renderizarOrcamentos();
-                renderizarCurrentItems();
-                salvarDados();
-                formOrcamento.reset();
-                atualizarSelects();
-            });
-
-            listaOrcamentos.addEventListener('click', e => {
-                const btn = e.target.closest('.pdf-orcamento-btn');
-                if (btn) {
-                    const orcamento = orcamentos.find(o => o.id === parseInt(btn.dataset.id));
-                    if (orcamento) gerarPDFOrcamento(orcamento);
-                }
-            });
+            formOrcamento.addEventListener('submit', e => { e.preventDefault(); const clienteIndex = selectOrcamentoCliente.value; if (clienteIndex === "" || currentItems.length === 0) { alert("Selecione um cliente e adicione itens."); return; } orcamentos.push({ id: orcamentoCounter++, cliente: clientes[clienteIndex], items: [...currentItems], total: currentItems.reduce((acc, item) => acc + item.valorTotal, 0), data: new Date().toLocaleDateString('pt-BR') }); currentItems = []; renderizarOrcamentos(); renderizarCurrentItems(); salvarDados(); formOrcamento.reset(); atualizarSelects(); });
+            listaOrcamentos.addEventListener('click', e => { const btn = e.target.closest('.pdf-orcamento-btn'); if (btn) { const orcamento = orcamentos.find(o => o.id === parseInt(btn.dataset.id)); if (orcamento) gerarPDFOrcamento(orcamento); } });
             
-            // --- LÓGICA DO MODAL ---
             closeModalButton.addEventListener('click', () => servicosModal.classList.remove('visible'));
             
             const renderizarServicos = (clienteId) => {
@@ -290,129 +327,50 @@
             };
             
             formServico.addEventListener('submit', async e => {
-                e.preventDefault();
-                if (!activeClientId) return;
-                const cliente = clientes.find(c => c.id === activeClientId);
-                const fileInput = document.getElementById('servico-anexo');
-                let anexo = null;
-                if (fileInput.files.length > 0) {
-                    const file = fileInput.files[0];
-                    // Atenção: Salvar arquivos grandes pode exceder o limite do Firestore.
-                    // O ideal para produção seria usar o Firebase Storage.
-                    anexo = { nome: file.name, dados: await new Promise(resolve => { const reader = new FileReader(); reader.onload = e => resolve(e.target.result); reader.readAsDataURL(file); }) };
-                }
+                e.preventDefault(); if (!activeClientId) return;
+                const cliente = clientes.find(c => c.id === activeClientId); const fileInput = document.getElementById('servico-anexo'); let anexo = null;
+                if (fileInput.files.length > 0) { const file = fileInput.files[0]; anexo = { nome: file.name, dados: await new Promise(resolve => { const reader = new FileReader(); reader.onload = e => resolve(e.target.result); reader.readAsDataURL(file); }) }; }
                 cliente.servicos.push({ id: servicoCounter++, descricao: document.getElementById('servico-descricao-input').value, data: document.getElementById('servico-data').value, quantidade: parseInt(document.getElementById('servico-quantidade').value, 10) || 1, valor: parseFloat(document.getElementById('servico-valor').value), anexo: anexo });
-                salvarDados();
-                renderizarServicos(activeClientId);
-                formServico.reset();
+                salvarDados(); renderizarServicos(activeClientId); formServico.reset();
             });
 
             servicosModal.addEventListener('click', e => {
-                const btn = e.target.closest('button');
-                if(!btn) return;
-
-                if (btn.id === 'gerar-relatorio-servicos-btn') {
-                     const cliente = clientes.find(c => c.id === activeClientId);
-                     if (cliente) gerarPDFRelatorioServicos(cliente);
-                     return;
-                }
-
-                const servicoId = parseInt(btn.dataset.servicoId);
-                if (!servicoId) return;
-
-                const cliente = clientes.find(c => c.id === activeClientId);
-                const row = document.getElementById(`servico-${servicoId}`);
-                
-                if (btn.classList.contains('edit-servico-btn')) {
-                    row.querySelectorAll('.data-view').forEach(el => el.style.display = 'none');
-                    row.querySelectorAll('.edit-view').forEach(el => el.style.display = 'block');
-                    btn.style.display = 'none';
-                    row.querySelector('.save-servico-btn').style.display = 'inline-block';
-                } else if (btn.classList.contains('save-servico-btn')) {
-                    const servico = cliente.servicos.find(s => s.id === servicoId);
-                    servico.descricao = row.querySelector('input[type="text"]').value;
-                    servico.data = row.querySelector('input[type="date"]').value;
-                    servico.quantidade = parseInt(row.querySelectorAll('input[type="number"]')[0].value, 10);
-                    servico.valor = parseFloat(row.querySelectorAll('input[type="number"]')[1].value);
-                    salvarDados();
-                    renderizarServicos(activeClientId);
-                } else if (btn.classList.contains('delete-servico-btn')) {
-                    if(confirm('Excluir este serviço?')){
-                        cliente.servicos = cliente.servicos.filter(s => s.id !== servicoId);
-                        salvarDados();
-                        renderizarServicos(activeClientId);
-                    }
-                }
+                const btn = e.target.closest('button'); if(!btn) return;
+                if (btn.id === 'gerar-relatorio-servicos-btn') { const cliente = clientes.find(c => c.id === activeClientId); if (cliente) gerarPDFRelatorioServicos(cliente); return; }
+                const servicoId = parseInt(btn.dataset.servicoId); if (!servicoId) return;
+                const cliente = clientes.find(c => c.id === activeClientId); const row = document.getElementById(`servico-${servicoId}`);
+                if (btn.classList.contains('edit-servico-btn')) { row.querySelectorAll('.data-view').forEach(el => el.style.display = 'none'); row.querySelectorAll('.edit-view').forEach(el => el.style.display = 'block'); btn.style.display = 'none'; row.querySelector('.save-servico-btn').style.display = 'inline-block';
+                } else if (btn.classList.contains('save-servico-btn')) { const servico = cliente.servicos.find(s => s.id === servicoId); servico.descricao = row.querySelector('input[type="text"]').value; servico.data = row.querySelector('input[type="date"]').value; servico.quantidade = parseInt(row.querySelectorAll('input[type="number"]')[0].value, 10); servico.valor = parseFloat(row.querySelectorAll('input[type="number"]')[1].value); salvarDados(); renderizarServicos(activeClientId);
+                } else if (btn.classList.contains('delete-servico-btn')) { if(confirm('Excluir este serviço?')){ cliente.servicos = cliente.servicos.filter(s => s.id !== servicoId); salvarDados(); renderizarServicos(activeClientId); } }
             });
 
-            // --- GERADORES DE PDF ---
             const gerarPDFOrcamento = (orcamento) => {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                const cliente = orcamento.cliente;
-                let startY = 40;
-
-                doc.setFontSize(18).text("Orçamento - Gráfica Traços Ltda", 14, 22);
-                doc.setFontSize(11).text("Contato: (54) 99617-2271", 14, 30);
-                doc.line(14, 32, 196, 32);
-                doc.setFontSize(12);
-                doc.text(`Data: ${orcamento.data}`, 196, startY, { align: 'right' });
-                startY += 10;
-                doc.text(`Cliente: ${cliente.nome}`, 14, startY);
-                if (cliente.endereco) {
-                    startY += 7;
-                    doc.text(`Endereço: ${[cliente.endereco, cliente.numero, cliente.cidade, cliente.uf.toUpperCase()].filter(Boolean).join(', ')}`, 14, startY);
-                }
-
-                doc.autoTable({
-                    head: [["Produto", "Descrição", "Qtd.", "Vlr. Unit.", "Vlr. Total"]],
-                    body: orcamento.items.map(i => [i.nome, i.descricao, i.quantidade, formatCurrency(i.valorUnitario), formatCurrency(i.valorTotal)]),
-                    startY: startY + 5, theme: 'striped', headStyles: { fillColor: [30, 64, 175] },
-                    columnStyles: { 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } }
-                });
-                let finalY = doc.lastAutoTable.finalY;
-                doc.setFontSize(14).setFont(undefined, 'bold').text('Total:', 148, finalY + 12, {align: 'right'});
-                doc.text(formatCurrency(orcamento.total), 196, finalY + 12, {align: 'right'});
-                doc.setFontSize(10).setFont(undefined, 'normal').text("Orçamento válido por 30 dias.", 14, finalY + 25);
-                doc.save(`Orcamento-${cliente.nome}-${orcamento.data}.pdf`);
+                const { jsPDF } = window.jspdf; const doc = new jsPDF(); const cliente = orcamento.cliente; let startY = 40;
+                doc.setFontSize(18).text("Orçamento - Gráfica Traços Ltda", 14, 22); doc.setFontSize(11).text("Contato: (54) 99617-2271", 14, 30); doc.line(14, 32, 196, 32); doc.setFontSize(12); doc.text(`Data: ${orcamento.data}`, 196, startY, { align: 'right' }); startY += 10; doc.text(`Cliente: ${cliente.nome}`, 14, startY); if (cliente.endereco) { startY += 7; doc.text(`Endereço: ${[cliente.endereco, cliente.numero, cliente.cidade, cliente.uf.toUpperCase()].filter(Boolean).join(', ')}`, 14, startY); }
+                doc.autoTable({ head: [["Produto", "Descrição", "Qtd.", "Vlr. Unit.", "Vlr. Total"]], body: orcamento.items.map(i => [i.nome, i.descricao, i.quantidade, formatCurrency(i.valorUnitario), formatCurrency(i.valorTotal)]), startY: startY + 5, theme: 'striped', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
+                let finalY = doc.lastAutoTable.finalY; doc.setFontSize(14).setFont(undefined, 'bold').text('Total:', 148, finalY + 12, {align: 'right'}); doc.text(formatCurrency(orcamento.total), 196, finalY + 12, {align: 'right'}); doc.setFontSize(10).setFont(undefined, 'normal').text("Orçamento válido por 30 dias.", 14, finalY + 25); doc.save(`Orcamento-${cliente.nome}-${orcamento.data}.pdf`);
             };
             
             const gerarPDFRelatorioServicos = (cliente) => {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                doc.setFontSize(18).text(`Relatório de Serviços - ${cliente.nome}`, 14, 22);
-                doc.setFontSize(11).text("Gráfica Traços Ltda", 14, 30);
-                doc.line(14, 32, 196, 32);
-                doc.setFontSize(12).text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')}`, 196, 40, { align: 'right' });
-                
-                const tableColumn = ["Data", "Descrição", "Qtd.", "Valor Total"];
-                const tableRows = cliente.servicos.map(s => [new Date(s.data).toLocaleDateString('pt-BR', {timeZone: 'UTC'}), s.descricao, s.quantidade, formatCurrency(s.valor)]);
-                
-                doc.autoTable({
-                    head: [tableColumn], body: tableRows, startY: 45, theme: 'grid',
-                    headStyles: { fillColor: [30, 64, 175] },
-                    columnStyles: { 0: { halign: 'center', cellWidth: 25 }, 2: { halign: 'center' }, 3: { halign: 'right' } }
-                });
-
+                const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.setFontSize(18).text(`Relatório de Serviços - ${cliente.nome}`, 14, 22); doc.setFontSize(11).text("Gráfica Traços Ltda", 14, 30); doc.line(14, 32, 196, 32); doc.setFontSize(12).text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')}`, 196, 40, { align: 'right' });
+                const tableColumn = ["Data", "Descrição", "Qtd.", "Valor Total"]; const tableRows = cliente.servicos.map(s => [new Date(s.data).toLocaleDateString('pt-BR', {timeZone: 'UTC'}), s.descricao, s.quantidade, formatCurrency(s.valor)]);
+                doc.autoTable({ head: [tableColumn], body: tableRows, startY: 45, theme: 'grid', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 0: { halign: 'center', cellWidth: 25 }, 2: { halign: 'center' }, 3: { halign: 'right' } } });
                 doc.save(`Relatorio-Servicos-${cliente.nome}.pdf`);
             };
             
-            // --- INICIALIZAÇÃO DA APLICAÇÃO APÓS AUTENTICAÇÃO ---
             carregarDados();
         }
 
-        // --- AUTENTICAÇÃO FIREBASE ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Usuário está logado (anonimamente)
                 userId = user.uid;
-                console.log("Usuário autenticado anonimamente:", userId);
-                runApp(); // Roda a aplicação principal
+                loadingContainer.style.display = 'none';
+                appContainer.style.display = 'block';
+                runApp();
             } else {
-                // Usuário não está logado, tenta fazer login anônimo
                 signInAnonymously(auth).catch((error) => {
+                    loadingError.textContent = `Falha na conexão: ${error.message}. Verifique a configuração do Firebase e se o domínio está autorizado.`;
                     console.error("Erro no login anônimo:", error);
-                    alert("Não foi possível conectar ao serviço de autenticação. O aplicativo não funcionará offline.");
                 });
             }
         });

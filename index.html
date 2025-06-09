@@ -146,16 +146,19 @@
                     <div class="bg-white p-6 rounded-lg shadow-md">
                         <h2 class="text-2xl font-bold mb-4 text-gray-700">Novo Produto</h2>
                         <form id="form-produto" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div><label for="produto-nome" class="block text-sm font-medium">Nome do Produto</label><input type="text" id="produto-nome" required class="mt-1 block w-full rounded-md" placeholder="Cartão de Visita"></div>
-                            <div><label for="produto-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" id="produto-quantidade" min="1" class="mt-1 block w-full rounded-md" placeholder="500"></div>
-                            <div><label for="produto-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" id="produto-valor" min="0" class="mt-1 block w-full rounded-md" placeholder="99.90"></div>
-                            <div class="md:col-span-3"><label for="produto-descricao" class="block text-sm font-medium">Descrição</label><textarea id="produto-descricao" rows="2" class="mt-1 block w-full rounded-md" placeholder="Couchê 300g, 4x4 cores..."></textarea></div>
+                            <div class="md:col-span-3"><label for="produto-nome" class="block text-sm font-medium">Nome do Produto</label><input type="text" id="produto-nome" required class="mt-1 block w-full rounded-md"></div>
+                            <div><label for="produto-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" id="produto-quantidade" min="1" class="mt-1 block w-full rounded-md"></div>
+                            <div><label for="produto-formato" class="block text-sm font-medium">Formato</label><input type="text" id="produto-formato" class="mt-1 block w-full rounded-md"></div>
+                            <div><label for="produto-cor" class="block text-sm font-medium">Cor Impressão</label><input type="text" id="produto-cor" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-2"><label for="produto-papel" class="block text-sm font-medium">Tipo de Papel</label><input type="text" id="produto-papel" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-2"><label for="produto-acabamento" class="block text-sm font-medium">Acabamento</label><input type="text" id="produto-acabamento" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-1"><label for="produto-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" id="produto-valor" min="0" class="mt-1 block w-full rounded-md"></div>
                             <div class="md:col-span-3"><button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Adicionar Produto</button></div>
                         </form>
                     </div>
                     <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
                         <h3 class="text-2xl font-bold mb-4 text-gray-700">Produtos Cadastrados</h3>
-                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descrição</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantidade</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Valor Total</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-produtos" class="bg-white divide-y"></tbody></table></div>
+                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Formato</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Papel</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acabamento</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-produtos" class="bg-white divide-y"></tbody></table></div>
                     </div>
                 </section>
             </main>
@@ -182,6 +185,26 @@
                 <div class="md:col-span-3"><label for="edit-cliente-cidade" class="block text-sm font-medium">Cidade</label><input type="text" id="edit-cliente-cidade" class="mt-1 block w-full rounded-md"></div>
                 <div class="md:col-span-1"><label for="edit-cliente-uf" class="block text-sm font-medium">UF</label><input type="text" id="edit-cliente-uf" maxlength="2" class="mt-1 block w-full rounded-md"></div>
                 <div class="md:col-span-6"><button type="submit" class="w-full bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600">Salvar Alterações</button></div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal de Edição de Produto -->
+    <div id="edit-produto-modal" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                 <h2 class="text-2xl font-bold text-gray-700">Editar Produto</h2>
+                 <button id="close-edit-produto-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            </div>
+            <form id="form-edit-produto" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2"><label for="edit-produto-nome" class="block text-sm font-medium">Nome do Produto</label><input type="text" id="edit-produto-nome" required class="mt-1 block w-full rounded-md"></div>
+                <div><label for="edit-produto-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" id="edit-produto-quantidade" min="1" class="mt-1 block w-full rounded-md"></div>
+                <div><label for="edit-produto-formato" class="block text-sm font-medium">Formato</label><input type="text" id="edit-produto-formato" class="mt-1 block w-full rounded-md"></div>
+                <div><label for="edit-produto-cor" class="block text-sm font-medium">Cor Impressão</label><input type="text" id="edit-produto-cor" class="mt-1 block w-full rounded-md"></div>
+                <div><label for="edit-produto-papel" class="block text-sm font-medium">Tipo de Papel</label><input type="text" id="edit-produto-papel" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-2"><label for="edit-produto-acabamento" class="block text-sm font-medium">Acabamento</label><input type="text" id="edit-produto-acabamento" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-2"><label for="edit-produto-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" id="edit-produto-valor" min="0" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-2"><button type="submit" class="w-full bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600">Salvar Alterações</button></div>
             </form>
         </div>
     </div>
@@ -270,7 +293,7 @@
 
         function runApp() {
             let clientes = [], produtos = [], orcamentos = [], currentItems = [];
-            let orcamentoCounter = 1, servicoCounter = 1, activeClientId = null, editingBudgetId = null, editingClientId = null;
+            let orcamentoCounter = 1, servicoCounter = 1, activeClientId = null, editingBudgetId = null, editingClientId = null, editingProductId = null;
             
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
@@ -296,6 +319,9 @@
             const editClienteModal = document.getElementById('edit-cliente-modal');
             const formEditCliente = document.getElementById('form-edit-cliente');
             const closeEditClienteModalBtn = document.getElementById('close-edit-cliente-modal-btn');
+            const editProdutoModal = document.getElementById('edit-produto-modal');
+            const formEditProduto = document.getElementById('form-edit-produto');
+            const closeEditProdutoModalBtn = document.getElementById('close-edit-produto-modal-btn');
             
             const docRef = doc(db, "data", userId);
 
@@ -325,9 +351,9 @@
             const renderizarTudo = () => { renderizarClientes(); renderizarProdutos(); renderizarOrcamentos(); };
             const atualizarSelects = () => {
                 selectOrcamentoCliente.innerHTML = '<option value="" disabled selected>Selecione...</option>';
-                clientes.forEach((c, i) => selectOrcamentoCliente.add(new Option(c.nome, c.id)));
+                clientes.forEach((c) => selectOrcamentoCliente.add(new Option(c.nome, c.id)));
                 selectItemProduto.innerHTML = '<option value="" disabled selected>Selecione...</option>';
-                produtos.forEach((p, i) => selectItemProduto.add(new Option(p.nome, p.id)));
+                produtos.forEach((p) => selectItemProduto.add(new Option(p.nome, p.id)));
             };
 
             const renderizarClientes = () => {
@@ -338,7 +364,7 @@
             };
 
             const renderizarProdutos = () => {
-                listaProdutos.innerHTML = produtos.length === 0 ? '<tr><td colspan="5" class="text-center py-4 text-gray-500">Nenhum produto</td></tr>' : produtos.map(p => `<tr id="produto-${p.id}" class="hover:bg-gray-50"><td class="px-6 py-4"><span class="data-view">${p.nome}</span><input type="text" value="${p.nome}" class="edit-view w-full rounded-md"></td><td class="px-6 py-4"><span class="data-view">${p.descricao||'N/A'}</span><textarea class="edit-view w-full rounded-md">${p.descricao||''}</textarea></td><td class="px-6 py-4"><span class="data-view">${p.quantidade||'N/A'}</span><input type="number" value="${p.quantidade}" class="edit-view w-full rounded-md"></td><td class="px-6 py-4"><span class="data-view">${p.valor>0?formatCurrency(p.valor):'N/A'}</span><input type="number" step="0.01" value="${p.valor}" class="edit-view w-full rounded-md"></td><td class="px-6 py-4"><div class="flex items-center space-x-2"><button data-id="${p.id}" class="edit-produto-btn text-blue-600 hover:text-blue-900">Editar</button><button data-id="${p.id}" class="save-produto-btn text-blue-600 hover:text-blue-900" style="display:none;">Salvar</button><button data-id="${p.id}" class="delete-produto-btn text-red-600 hover:text-red-900">Excluir</button></div></td></tr>`).join('');
+                listaProdutos.innerHTML = produtos.length === 0 ? '<tr><td colspan="5" class="text-center py-4 text-gray-500">Nenhum produto</td></tr>' : produtos.map(p => `<tr id="produto-${p.id}" class="hover:bg-gray-50"><td class="px-6 py-4">${p.nome}</td><td class="px-6 py-4">${p.formato||'N/A'}</td><td class="px-6 py-4">${p.papel||'N/A'}</td><td class="px-6 py-4">${p.acabamento||'N/A'}</td><td class="px-6 py-4"><div class="flex items-center space-x-2"><button data-id="${p.id}" class="edit-produto-btn text-blue-600 hover:text-blue-900">Editar</button><button data-id="${p.id}" class="delete-produto-btn text-red-600 hover:text-red-900">Excluir</button></div></td></tr>`).join('');
                 atualizarSelects();
             };
             
@@ -354,7 +380,7 @@
             tabButtons.forEach(button => button.addEventListener('click', () => { tabButtons.forEach(btn => btn.classList.remove('active')); button.classList.add('active'); tabContents.forEach(content => content.style.display = 'none'); document.getElementById(button.dataset.target).style.display = 'block'; }));
 
             formCliente.addEventListener('submit', e => { e.preventDefault(); clientes.push({ id: Date.now(), nome: e.target.elements['cliente-nome'].value, telefone: e.target.elements['cliente-telefone'].value, email: e.target.elements['cliente-email'].value, cpf: e.target.elements['cliente-cpf'].value, cnpj: e.target.elements['cliente-cnpj'].value, ie: e.target.elements['cliente-ie'].value, endereco: e.target.elements['cliente-endereco'].value, numero: e.target.elements['cliente-numero'].value, cep: e.target.elements['cliente-cep'].value, cidade: e.target.elements['cliente-cidade'].value, uf: e.target.elements['cliente-uf'].value, servicos: [] }); salvarDados(); renderizarClientes(); formCliente.reset(); });
-            formProduto.addEventListener('submit', e => { e.preventDefault(); produtos.push({ id: Date.now(), nome: e.target.elements['produto-nome'].value, descricao: e.target.elements['produto-descricao'].value, quantidade: parseInt(e.target.elements['produto-quantidade'].value, 10) || 0, valor: parseFloat(e.target.elements['produto-valor'].value) || 0 }); salvarDados(); renderizarProdutos(); formProduto.reset(); });
+            formProduto.addEventListener('submit', e => { e.preventDefault(); produtos.push({ id: Date.now(), nome: e.target.elements['produto-nome'].value, quantidade: parseInt(e.target.elements['produto-quantidade'].value, 10) || 0, valor: parseFloat(e.target.elements['produto-valor'].value) || 0, formato: e.target.elements['produto-formato'].value, cor: e.target.elements['produto-cor'].value, papel: e.target.elements['produto-papel'].value, acabamento: e.target.elements['produto-acabamento'].value }); salvarDados(); renderizarProdutos(); formProduto.reset(); });
 
             searchClienteInput.addEventListener('keyup', renderizarClientes);
 
@@ -412,9 +438,10 @@
                 if (e.target.value === "") return;
                 const p = produtos.find(p => p.id === parseInt(e.target.value));
                 if (p) {
-                    document.getElementById('item-descricao').value = p.descricao || '';
+                    const descricaoDetalhada = `Formato: ${p.formato || ''}, Cor: ${p.cor || ''}, Papel: ${p.papel || ''}, Acabamento: ${p.acabamento || ''}`;
+                    document.getElementById('item-descricao').value = descricaoDetalhada.replace(/,(\s*,)+/g, ',').replace(/^,|,$/g, '').trim();
                     document.getElementById('item-quantidade').value = p.quantidade || 1;
-                    const valorUnitario = (p.valor && p.quantidade > 0) ? (p.valor / p.quantidade) : (p.valor || 0);
+                    const valorUnitario = (p.valor && p.quantidade > 0) ? (p.valor / p.quantidade) : 0;
                     document.getElementById('item-valor-unitario').value = valorUnitario.toFixed(2);
                 }
             });
@@ -468,16 +495,37 @@
 
             listaProdutos.addEventListener('click', e => {
                 const btn = e.target.closest('button'); if (!btn) return;
-                const id = parseInt(btn.dataset.id); const row = document.getElementById(`produto-${id}`);
-                if (btn.classList.contains('edit-produto-btn')) { row.querySelectorAll('.data-view').forEach(el => el.style.display = 'none'); row.querySelectorAll('.edit-view').forEach(el => el.style.display = 'block'); btn.style.display = 'none'; row.querySelector('.save-produto-btn').style.display = 'inline-block';
-                } else if (btn.classList.contains('save-produto-btn')) {
+                const id = parseInt(btn.dataset.id);
+                if (btn.classList.contains('edit-produto-btn')) { 
+                    editingProductId = id;
                     const produto = produtos.find(p => p.id === id);
-                    produto.nome = row.querySelector('input[type="text"]').value;
-                    produto.descricao = row.querySelector('textarea').value;
-                    produto.quantidade = parseInt(row.querySelectorAll('input[type="number"]')[0].value, 10);
-                    produto.valor = parseFloat(row.querySelectorAll('input[type="number"]')[1].value);
-                    salvarDados(); renderizarProdutos();
+                    formEditProduto.elements['edit-produto-nome'].value = produto.nome || '';
+                    formEditProduto.elements['edit-produto-quantidade'].value = produto.quantidade || '';
+                    formEditProduto.elements['edit-produto-valor'].value = produto.valor || '';
+                    formEditProduto.elements['edit-produto-formato'].value = produto.formato || '';
+                    formEditProduto.elements['edit-produto-cor'].value = produto.cor || '';
+                    formEditProduto.elements['edit-produto-papel'].value = produto.papel || '';
+                    formEditProduto.elements['edit-produto-acabamento'].value = produto.acabamento || '';
+                    editProdutoModal.classList.add('visible');
                 } else if (btn.classList.contains('delete-produto-btn')) { produtos = produtos.filter(p => p.id !== id); salvarDados(); renderizarProdutos(); }
+            });
+            
+            closeEditProdutoModalBtn.addEventListener('click', () => editProdutoModal.classList.remove('visible'));
+            formEditProduto.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const produto = produtos.find(p => p.id === editingProductId);
+                if(produto) {
+                    produto.nome = formEditProduto.elements['edit-produto-nome'].value;
+                    produto.quantidade = parseInt(formEditProduto.elements['edit-produto-quantidade'].value, 10);
+                    produto.valor = parseFloat(formEditProduto.elements['edit-produto-valor'].value);
+                    produto.formato = formEditProduto.elements['edit-produto-formato'].value;
+                    produto.cor = formEditProduto.elements['edit-produto-cor'].value;
+                    produto.papel = formEditProduto.elements['edit-produto-papel'].value;
+                    produto.acabamento = formEditProduto.elements['edit-produto-acabamento'].value;
+                    salvarDados();
+                    renderizarProdutos();
+                    editProdutoModal.classList.remove('visible');
+                }
             });
             
             closeModalButton.addEventListener('click', () => servicosModal.classList.remove('visible'));

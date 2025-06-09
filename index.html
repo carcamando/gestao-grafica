@@ -121,6 +121,9 @@
                         <form id="form-cliente" class="grid grid-cols-1 md:grid-cols-6 gap-4 border-b pb-6 mb-6">
                             <div class="md:col-span-3"><label for="cliente-nome" class="block text-sm font-medium">Nome</label><input type="text" id="cliente-nome" required class="mt-1 block w-full rounded-md"></div>
                             <div class="md:col-span-3"><label for="cliente-telefone" class="block text-sm font-medium">Telefone/WhatsApp</label><input type="tel" id="cliente-telefone" required class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-2"><label for="cliente-cpf" class="block text-sm font-medium">CPF</label><input type="text" id="cliente-cpf" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-2"><label for="cliente-cnpj" class="block text-sm font-medium">CNPJ</label><input type="text" id="cliente-cnpj" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-2"><label for="cliente-ie" class="block text-sm font-medium">Inscr. Est.</label><input type="text" id="cliente-ie" class="mt-1 block w-full rounded-md"></div>
                             <div class="md:col-span-6"><label for="cliente-email" class="block text-sm font-medium">Email (Opcional)</label><input type="email" id="cliente-email" class="mt-1 block w-full rounded-md"></div>
                             <div class="md:col-span-4"><label for="cliente-endereco" class="block text-sm font-medium">Endereço</label><input type="text" id="cliente-endereco" class="mt-1 block w-full rounded-md"></div>
                             <div class="md:col-span-2"><label for="cliente-numero" class="block text-sm font-medium">Número</label><input type="text" id="cliente-numero" class="mt-1 block w-full rounded-md"></div>
@@ -134,7 +137,7 @@
                             <label for="search-cliente-input" class="block text-sm font-medium text-gray-700">Pesquisar por Nome</label>
                             <input type="text" id="search-cliente-input" placeholder="Digite o nome do cliente..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
-                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telefone</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Endereço</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-clientes" class="bg-white divide-y"></tbody></table></div>
+                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telefone</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">CPF/CNPJ</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-clientes" class="bg-white divide-y"></tbody></table></div>
                     </div>
                 </section>
 
@@ -158,6 +161,31 @@
             </main>
         </div>
     </div>
+
+    <!-- Modal de Edição de Cliente -->
+    <div id="edit-cliente-modal" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                 <h2 class="text-2xl font-bold text-gray-700">Editar Cliente</h2>
+                 <button id="close-edit-cliente-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            </div>
+            <form id="form-edit-cliente" class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                <div class="md:col-span-3"><label for="edit-cliente-nome" class="block text-sm font-medium">Nome</label><input type="text" id="edit-cliente-nome" required class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-3"><label for="edit-cliente-telefone" class="block text-sm font-medium">Telefone/WhatsApp</label><input type="tel" id="edit-cliente-telefone" required class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-2"><label for="edit-cliente-cpf" class="block text-sm font-medium">CPF</label><input type="text" id="edit-cliente-cpf" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-2"><label for="edit-cliente-cnpj" class="block text-sm font-medium">CNPJ</label><input type="text" id="edit-cliente-cnpj" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-2"><label for="edit-cliente-ie" class="block text-sm font-medium">Inscr. Est.</label><input type="text" id="edit-cliente-ie" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-6"><label for="edit-cliente-email" class="block text-sm font-medium">Email</label><input type="email" id="edit-cliente-email" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-4"><label for="edit-cliente-endereco" class="block text-sm font-medium">Endereço</label><input type="text" id="edit-cliente-endereco" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-2"><label for="edit-cliente-numero" class="block text-sm font-medium">Número</label><input type="text" id="edit-cliente-numero" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-2"><label for="edit-cliente-cep" class="block text-sm font-medium">CEP</label><input type="text" id="edit-cliente-cep" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-3"><label for="edit-cliente-cidade" class="block text-sm font-medium">Cidade</label><input type="text" id="edit-cliente-cidade" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-1"><label for="edit-cliente-uf" class="block text-sm font-medium">UF</label><input type="text" id="edit-cliente-uf" maxlength="2" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-6"><button type="submit" class="w-full bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600">Salvar Alterações</button></div>
+            </form>
+        </div>
+    </div>
+
 
     <!-- Modal para Gerenciar Serviços do Cliente -->
     <div id="servicos-modal" class="modal-backdrop">
@@ -242,7 +270,8 @@
 
         function runApp() {
             let clientes = [], produtos = [], orcamentos = [], currentItems = [];
-            let orcamentoCounter = 1, servicoCounter = 1, activeClientId = null, editingBudgetId = null;
+            let orcamentoCounter = 1, servicoCounter = 1, activeClientId = null, editingBudgetId = null, editingClientId = null;
+            
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
             const formCliente = document.getElementById('form-cliente');
@@ -264,6 +293,9 @@
             const listaServicosContainer = document.getElementById('lista-servicos-container');
             const orcamentoFormTitle = document.getElementById('orcamento-form-title');
             const submitOrcamentoBtn = document.getElementById('submit-orcamento-btn');
+            const editClienteModal = document.getElementById('edit-cliente-modal');
+            const formEditCliente = document.getElementById('form-edit-cliente');
+            const closeEditClienteModalBtn = document.getElementById('close-edit-cliente-modal-btn');
             
             const docRef = doc(db, "data", userId);
 
@@ -301,11 +333,7 @@
             const renderizarClientes = () => {
                 const searchTerm = searchClienteInput.value.toLowerCase();
                 const filteredClientes = clientes.filter(c => c.nome.toLowerCase().includes(searchTerm));
-
-                listaClientes.innerHTML = filteredClientes.length === 0 ? '<tr><td colspan="4" class="text-center py-4 text-gray-500">Nenhum cliente encontrado.</td></tr>' : filteredClientes.map(c => {
-                    const endereco = [c.endereco, c.numero, c.cidade].filter(Boolean).join(', ');
-                    return `<tr id="cliente-${c.id}" class="hover:bg-gray-50"><td class="px-6 py-4"><span class="data-view">${c.nome}</span><input type="text" value="${c.nome}" class="edit-view w-full rounded-md"></td><td class="px-6 py-4"><span class="data-view">${c.telefone}</span><input type="tel" value="${c.telefone}" class="edit-view w-full rounded-md"></td><td class="px-6 py-4"><span class="data-view">${endereco||'N/A'}</span></td><td class="px-6 py-4 text-sm font-medium"><div class="flex items-center space-x-2"><button data-id="${c.id}" class="manage-services-btn text-green-600 hover:text-green-900">Serviços</button><button data-id="${c.id}" class="edit-btn text-blue-600 hover:text-blue-900">Editar</button><button data-id="${c.id}" class="save-btn text-blue-600 hover:text-blue-900" style="display:none;">Salvar</button><button data-id="${c.id}" class="delete-btn text-red-600 hover:text-red-900">Deletar</button></div></td></tr>`
-                }).join('');
+                listaClientes.innerHTML = filteredClientes.length === 0 ? '<tr><td colspan="4" class="text-center py-4 text-gray-500">Nenhum cliente</td></tr>' : filteredClientes.map(c => `<tr id="cliente-${c.id}" class="hover:bg-gray-50"><td class="px-6 py-4">${c.nome}</td><td class="px-6 py-4">${c.telefone}</td><td class="px-6 py-4">${c.cpf || c.cnpj || 'N/A'}</td><td class="px-6 py-4 text-sm font-medium"><div class="flex items-center space-x-2 flex-wrap"><button data-id="${c.id}" class="manage-services-btn text-green-600 hover:text-green-900">Serviços</button><button data-id="${c.id}" class="edit-btn text-blue-600 hover:text-blue-900">Editar</button><button data-id="${c.id}" class="delete-btn text-red-600 hover:text-red-900">Deletar</button><button data-id="${c.id}" class="report-cliente-btn text-purple-600 hover:text-purple-900">Relatório</button></div></td></tr>`).join('');
                 atualizarSelects();
             };
 
@@ -325,18 +353,59 @@
             
             tabButtons.forEach(button => button.addEventListener('click', () => { tabButtons.forEach(btn => btn.classList.remove('active')); button.classList.add('active'); tabContents.forEach(content => content.style.display = 'none'); document.getElementById(button.dataset.target).style.display = 'block'; }));
 
-            formCliente.addEventListener('submit', e => { e.preventDefault(); clientes.push({ id: Date.now(), nome: e.target.elements['cliente-nome'].value, telefone: e.target.elements['cliente-telefone'].value, email: e.target.elements['cliente-email'].value, endereco: e.target.elements['cliente-endereco'].value, numero: e.target.elements['cliente-numero'].value, cep: e.target.elements['cliente-cep'].value, cidade: e.target.elements['cliente-cidade'].value, uf: e.target.elements['cliente-uf'].value, servicos: [] }); salvarDados(); renderizarClientes(); formCliente.reset(); });
+            formCliente.addEventListener('submit', e => { e.preventDefault(); clientes.push({ id: Date.now(), nome: e.target.elements['cliente-nome'].value, telefone: e.target.elements['cliente-telefone'].value, email: e.target.elements['cliente-email'].value, cpf: e.target.elements['cliente-cpf'].value, cnpj: e.target.elements['cliente-cnpj'].value, ie: e.target.elements['cliente-ie'].value, endereco: e.target.elements['cliente-endereco'].value, numero: e.target.elements['cliente-numero'].value, cep: e.target.elements['cliente-cep'].value, cidade: e.target.elements['cliente-cidade'].value, uf: e.target.elements['cliente-uf'].value, servicos: [] }); salvarDados(); renderizarClientes(); formCliente.reset(); });
             formProduto.addEventListener('submit', e => { e.preventDefault(); produtos.push({ id: Date.now(), nome: e.target.elements['produto-nome'].value, descricao: e.target.elements['produto-descricao'].value, quantidade: parseInt(e.target.elements['produto-quantidade'].value, 10) || 0, valor: parseFloat(e.target.elements['produto-valor'].value) || 0 }); salvarDados(); renderizarProdutos(); formProduto.reset(); });
 
             searchClienteInput.addEventListener('keyup', renderizarClientes);
 
             listaClientes.addEventListener('click', e => {
                 const btn = e.target.closest('button'); if (!btn) return;
-                const id = parseInt(btn.dataset.id); const row = document.getElementById(`cliente-${id}`);
-                if (btn.classList.contains('edit-btn')) { row.querySelectorAll('.data-view').forEach(el => el.style.display = 'none'); row.querySelectorAll('td:not(:nth-child(3)):not(:last-child) .edit-view').forEach(el => el.style.display = 'block'); btn.style.display = 'none'; row.querySelector('.save-btn').style.display = 'inline-block';
-                } else if (btn.classList.contains('save-btn')) { const cliente = clientes.find(c => c.id === id); cliente.nome = row.querySelector('input[type="text"]').value; cliente.telefone = row.querySelector('input[type="tel"]').value; salvarDados(); renderizarClientes();
-                } else if (btn.classList.contains('delete-btn')) { if (confirm('Tem certeza?')) { clientes = clientes.filter(c => c.id !== id); orcamentos = orcamentos.filter(o => o.cliente.id !== id); salvarDados(); renderizarClientes(); renderizarOrcamentos(); }
-                } else if (btn.classList.contains('manage-services-btn')) { activeClientId = id; const cliente = clientes.find(c => c.id === id); modalTitle.textContent = `Serviços de ${cliente.nome}`; renderizarServicos(id); servicosModal.classList.add('visible'); }
+                const id = parseInt(btn.dataset.id); 
+                if (btn.classList.contains('edit-btn')) { 
+                    editingClientId = id;
+                    const cliente = clientes.find(c => c.id === id);
+                    formEditCliente.elements['edit-cliente-nome'].value = cliente.nome || '';
+                    formEditCliente.elements['edit-cliente-telefone'].value = cliente.telefone || '';
+                    formEditCliente.elements['edit-cliente-cpf'].value = cliente.cpf || '';
+                    formEditCliente.elements['edit-cliente-cnpj'].value = cliente.cnpj || '';
+                    formEditCliente.elements['edit-cliente-ie'].value = cliente.ie || '';
+                    formEditCliente.elements['edit-cliente-email'].value = cliente.email || '';
+                    formEditCliente.elements['edit-cliente-endereco'].value = cliente.endereco || '';
+                    formEditCliente.elements['edit-cliente-numero'].value = cliente.numero || '';
+                    formEditCliente.elements['edit-cliente-cep'].value = cliente.cep || '';
+                    formEditCliente.elements['edit-cliente-cidade'].value = cliente.cidade || '';
+                    formEditCliente.elements['edit-cliente-uf'].value = cliente.uf || '';
+                    editClienteModal.classList.add('visible');
+                } else if (btn.classList.contains('delete-btn')) { 
+                    clientes = clientes.filter(c => c.id !== id); 
+                    orcamentos = orcamentos.filter(o => !o.cliente || o.cliente.id !== id); 
+                    salvarDados(); 
+                    renderizarClientes(); 
+                    renderizarOrcamentos(); 
+                } else if (btn.classList.contains('manage-services-btn')) { activeClientId = id; const cliente = clientes.find(c => c.id === id); modalTitle.textContent = `Serviços de ${cliente.nome}`; renderizarServicos(id); servicosModal.classList.add('visible'); 
+                } else if (btn.classList.contains('report-cliente-btn')) { const cliente = clientes.find(c => c.id === id); if (cliente && cliente.servicos && cliente.servicos.length > 0) { gerarPDFRelatorioServicos(cliente); } else { alert('Este cliente não possui serviços para gerar um relatório.'); } }
+            });
+            
+            closeEditClienteModalBtn.addEventListener('click', () => editClienteModal.classList.remove('visible'));
+            formEditCliente.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const cliente = clientes.find(c => c.id === editingClientId);
+                if(cliente) {
+                    cliente.nome = formEditCliente.elements['edit-cliente-nome'].value;
+                    cliente.telefone = formEditCliente.elements['edit-cliente-telefone'].value;
+                    cliente.cpf = formEditCliente.elements['edit-cliente-cpf'].value;
+                    cliente.cnpj = formEditCliente.elements['edit-cliente-cnpj'].value;
+                    cliente.ie = formEditCliente.elements['edit-cliente-ie'].value;
+                    cliente.email = formEditCliente.elements['edit-cliente-email'].value;
+                    cliente.endereco = formEditCliente.elements['edit-cliente-endereco'].value;
+                    cliente.numero = formEditCliente.elements['edit-cliente-numero'].value;
+                    cliente.cep = formEditCliente.elements['edit-cliente-cep'].value;
+                    cliente.cidade = formEditCliente.elements['edit-cliente-cidade'].value;
+                    cliente.uf = formEditCliente.elements['edit-cliente-uf'].value;
+                    salvarDados();
+                    renderizarClientes();
+                    editClienteModal.classList.remove('visible');
+                }
             });
 
             selectItemProduto.addEventListener('change', e => {
@@ -370,7 +439,7 @@
                     editingBudgetId = null;
                     orcamentoFormTitle.textContent = "Novo Orçamento";
                     submitOrcamentoBtn.textContent = "Gerar Orçamento Final";
-                    submitOrcamentoBtn.classList.replace('bg-yellow-600', 'bg-blue-600');
+                    submitOrcamentoBtn.classList.replace('bg-yellow-500', 'bg-blue-600');
                 } else {
                     orcamentos.push({ id: orcamentoCounter++, cliente: cliente, items: [...currentItems], total: currentItems.reduce((acc, item) => acc + item.valorTotal, 0), data: new Date().toLocaleDateString('pt-BR') });
                 }
@@ -381,7 +450,7 @@
                 const btn = e.target.closest('button'); if (!btn) return;
                 const id = parseInt(btn.dataset.id);
                 if(btn.classList.contains('pdf-orcamento-btn')) { const orcamento = orcamentos.find(o => o.id === id); if (orcamento) gerarPDFOrcamento(orcamento); }
-                else if (btn.classList.contains('delete-orcamento-btn')) { if(confirm('Excluir este orçamento?')) { orcamentos = orcamentos.filter(o => o.id !== id); salvarDados(); renderizarOrcamentos(); } }
+                else if (btn.classList.contains('delete-orcamento-btn')) { orcamentos = orcamentos.filter(o => o.id !== id); salvarDados(); renderizarOrcamentos();  }
                 else if(btn.classList.contains('edit-orcamento-btn')) {
                     const orcamento = orcamentos.find(o => o.id === id);
                     if(orcamento) {
@@ -391,7 +460,7 @@
                         renderizarCurrentItems();
                         orcamentoFormTitle.textContent = `Editando Orçamento Nº ${String(id).padStart(4,'0')}`;
                         submitOrcamentoBtn.textContent = "Salvar Alterações";
-                        submitOrcamentoBtn.classList.replace('bg-blue-600', 'bg-yellow-600');
+                        submitOrcamentoBtn.classList.replace('bg-blue-600', 'bg-yellow-500');
                         window.scrollTo(0, 0);
                     }
                 }
@@ -408,7 +477,7 @@
                     produto.quantidade = parseInt(row.querySelectorAll('input[type="number"]')[0].value, 10);
                     produto.valor = parseFloat(row.querySelectorAll('input[type="number"]')[1].value);
                     salvarDados(); renderizarProdutos();
-                } else if (btn.classList.contains('delete-produto-btn')) { if (confirm('Tem certeza?')) { produtos = produtos.filter(p => p.id !== id); salvarDados(); renderizarProdutos(); } }
+                } else if (btn.classList.contains('delete-produto-btn')) { produtos = produtos.filter(p => p.id !== id); salvarDados(); renderizarProdutos(); }
             });
             
             closeModalButton.addEventListener('click', () => servicosModal.classList.remove('visible'));
@@ -440,12 +509,14 @@
                 const cliente = clientes.find(c => c.id === activeClientId); const row = document.getElementById(`servico-${servicoId}`);
                 if (btn.classList.contains('edit-servico-btn')) { row.querySelectorAll('.data-view').forEach(el => el.style.display = 'none'); row.querySelectorAll('.edit-view').forEach(el => el.style.display = 'block'); btn.style.display = 'none'; row.querySelector('.save-servico-btn').style.display = 'inline-block';
                 } else if (btn.classList.contains('save-servico-btn')) { const servico = cliente.servicos.find(s => s.id === servicoId); servico.descricao = row.querySelector('input[type="text"]').value; servico.data = row.querySelector('input[type="date"]').value; servico.quantidade = parseInt(row.querySelectorAll('input[type="number"]')[0].value, 10); servico.valor = parseFloat(row.querySelectorAll('input[type="number"]')[1].value); salvarDados(); renderizarServicos(activeClientId);
-                } else if (btn.classList.contains('delete-servico-btn')) { if(confirm('Excluir este serviço?')){ cliente.servicos = cliente.servicos.filter(s => s.id !== servicoId); salvarDados(); renderizarServicos(activeClientId); } }
+                } else if (btn.classList.contains('delete-servico-btn')) { cliente.servicos = cliente.servicos.filter(s => s.id !== servicoId); salvarDados(); renderizarServicos(activeClientId);  }
             });
 
             const gerarPDFOrcamento = (orcamento) => {
                 const { jsPDF } = window.jspdf; const doc = new jsPDF(); const cliente = orcamento.cliente; let startY = 40;
-                doc.setFontSize(18).text("Orçamento - Gráfica Traços Ltda", 14, 22); doc.setFontSize(11).text("Contato: (54) 99617-2271", 14, 30); doc.line(14, 32, 196, 32); doc.setFontSize(12); doc.text(`Data: ${orcamento.data}`, 196, startY, { align: 'right' }); startY += 10; doc.text(`Cliente: ${cliente.nome}`, 14, startY); if (cliente.endereco) { startY += 7; doc.text(`Endereço: ${[cliente.endereco, cliente.numero, cliente.cidade, cliente.uf.toUpperCase()].filter(Boolean).join(', ')}`, 14, startY); }
+                doc.setFontSize(18).text("Orçamento - Gráfica Traços Ltda", 14, 22); doc.setFontSize(11).text("Contato: (54) 99617-2271", 14, 30); doc.line(14, 32, 196, 32); doc.setFontSize(12); doc.text(`Data: ${orcamento.data}`, 196, startY, { align: 'right' }); startY += 10; doc.text(`Cliente: ${cliente.nome}`, 14, startY);
+                if (cliente.cpf || cliente.cnpj) { startY += 7; doc.text(`CPF/CNPJ: ${cliente.cpf || cliente.cnpj}`, 14, startY); }
+                if (cliente.endereco) { startY += 7; doc.text(`Endereço: ${[cliente.endereco, cliente.numero, cliente.cidade, cliente.uf.toUpperCase()].filter(Boolean).join(', ')}`, 14, startY); }
                 doc.autoTable({ head: [["Produto", "Descrição", "Qtd.", "Vlr. Unit.", "Vlr. Total"]], body: orcamento.items.map(i => [i.nome, i.descricao, i.quantidade, formatCurrency(i.valorUnitario), formatCurrency(i.valorTotal)]), startY: startY + 5, theme: 'striped', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
                 let finalY = doc.lastAutoTable.finalY; doc.setFontSize(14).setFont(undefined, 'bold').text('Total:', 148, finalY + 12, {align: 'right'}); doc.text(formatCurrency(orcamento.total), 196, finalY + 12, {align: 'right'}); doc.setFontSize(10).setFont(undefined, 'normal').text("Orçamento válido por 30 dias.", 14, finalY + 25); doc.save(`Orcamento-${cliente.nome}-${orcamento.data}.pdf`);
             };

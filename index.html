@@ -34,13 +34,18 @@
 
     <!-- Tela de Autenticação -->
     <div id="auth-container" class="flex items-center justify-center h-screen">
-        <div class="w-full max-w-sm p-8 space-y-6 bg-white rounded-lg shadow-md text-center">
+        <div id="login-box" class="w-full max-w-sm p-8 space-y-6 bg-white rounded-lg shadow-md text-center">
             <h2 class="text-2xl font-bold text-gray-800">Acesso ao Sistema</h2>
             <p class="text-gray-600">Use sua conta do Google para entrar com segurança.</p>
             <button id="google-login-btn" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <svg class="mr-2 -ml-1 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2C5.03 2 1 6.03 1 11s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zM8.94 16.54C6.47 16.54 4.5 14.57 4.5 12.1s1.97-4.44 4.44-4.44c1.17 0 2.24.47 3.01 1.24l-1.2 1.2c-.4-.38-1.03-.64-1.81-.64-1.54 0-2.78 1.24-2.78 2.78s1.24 2.78 2.78 2.78c1.78 0 2.45-1.12 2.58-1.74h-2.58v-1.98h4.48c.07.38.12.78.12 1.22 0 2.66-1.78 4.6-4.6 4.6z" /></svg>
                 Entrar com Google
             </button>
+        </div>
+        <div id="access-denied-box" class="hidden w-full max-w-sm p-8 space-y-4 bg-white rounded-lg shadow-md text-center">
+             <h2 class="text-2xl font-bold text-red-600">Acesso Negado</h2>
+             <p class="text-gray-600">Seu e-mail não está autorizado a acessar este sistema. Por favor, entre em contato com o administrador.</p>
+             <button id="logout-denied-btn" class="w-full mt-4 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700">Sair</button>
         </div>
     </div>
 
@@ -258,6 +263,9 @@
         const appContainer = document.getElementById('app-container');
         const googleLoginBtn = document.getElementById('google-login-btn');
         const logoutBtn = document.getElementById('logout-btn');
+        const accessDeniedBox = document.getElementById('access-denied-box');
+        const loginBox = document.getElementById('login-box');
+        const logoutDeniedBtn = document.getElementById('logout-denied-btn');
 
         const provider = new GoogleAuthProvider();
 
@@ -269,17 +277,28 @@
                 });
         });
 
-        logoutBtn.addEventListener('click', () => {
-            signOut(auth);
-        });
+        logoutBtn.addEventListener('click', () => signOut(auth));
+        logoutDeniedBtn.addEventListener('click', () => signOut(auth));
 
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
-                userId = user.uid;
-                authContainer.style.display = 'none';
-                appContainer.style.display = 'block';
-                runApp();
+                const userDocRef = doc(db, "usuarios_autorizados", user.email);
+                const docSnap = await getDoc(userDocRef);
+
+                if (docSnap.exists()) {
+                    userId = user.uid;
+                    authContainer.style.display = 'none';
+                    appContainer.style.display = 'block';
+                    runApp();
+                } else {
+                    loginBox.classList.add('hidden');
+                    accessDeniedBox.classList.remove('hidden');
+                    authContainer.style.display = 'flex';
+                    appContainer.style.display = 'none';
+                }
             } else {
+                loginBox.classList.remove('hidden');
+                accessDeniedBox.classList.add('hidden');
                 authContainer.style.display = 'flex';
                 appContainer.style.display = 'none';
             }
@@ -319,7 +338,7 @@
             const formEditProduto = document.getElementById('form-edit-produto');
             const closeEditProdutoModalBtn = document.getElementById('close-edit-produto-modal-btn');
             
-            const docRef = doc(db, "usuarios", userId);
+            const docRef = doc(db, "data", userId);
 
             const salvarDados = async () => {
                 const dataToSave = { clientes, produtos, orcamentos, orcamentoCounter, servicoCounter };

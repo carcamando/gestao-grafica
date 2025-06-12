@@ -601,8 +601,12 @@
             const gerarPDFRelatorioServicos = (cliente) => {
                 const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.setFontSize(18).text(`Relatório de Serviços - ${cliente.nome}`, 14, 22); doc.setFontSize(11).text("Gráfica Traços Ltda", 14, 30); doc.line(14, 32, 196, 32); doc.setFontSize(12).text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')}`, 196, 40, { align: 'right' });
                 const servicosOrdenados = [...cliente.servicos].sort((a, b) => new Date(b.data) - new Date(a.data));
-                const tableColumn = ["Data", "Descrição", "Qtd.", "Valor Total"]; const tableRows = servicosOrdenados.map(s => [new Date(s.data).toLocaleDateString('pt-BR', {timeZone: 'UTC'}), s.descricao, s.quantidade, formatCurrency(s.valor)]);
-                doc.autoTable({ head: [tableColumn], body: tableRows, startY: 45, theme: 'grid', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 0: { halign: 'center', cellWidth: 25 }, 2: { halign: 'center' }, 3: { halign: 'right' } } });
+                const tableColumn = ["Data", "Descrição", "Qtd.", "Vlr. Unit.", "Valor Total"]; 
+                const tableRows = servicosOrdenados.map(s => {
+                    const valorUnitario = (s.valor && s.quantidade > 0) ? (s.valor / s.quantidade) : 0;
+                    return [new Date(s.data).toLocaleDateString('pt-BR', {timeZone: 'UTC'}), s.descricao, s.quantidade, formatCurrency(valorUnitario), formatCurrency(s.valor)];
+                });
+                doc.autoTable({ head: [tableColumn], body: tableRows, startY: 45, theme: 'grid', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 0: { halign: 'center', cellWidth: 25 }, 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
                 doc.save(`Relatorio-Servicos-${cliente.nome}.pdf`);
             };
             

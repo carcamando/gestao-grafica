@@ -405,7 +405,7 @@
             tabButtons.forEach(button => button.addEventListener('click', () => { tabButtons.forEach(btn => btn.classList.remove('active')); button.classList.add('active'); tabContents.forEach(content => content.style.display = 'none'); document.getElementById(button.dataset.target).style.display = 'block'; }));
 
             formCliente.addEventListener('submit', e => { e.preventDefault(); clientes.push({ id: Date.now(), nome: e.target.elements['cliente-nome'].value, telefone: e.target.elements['cliente-telefone'].value, email: e.target.elements['cliente-email'].value, cpf: e.target.elements['cliente-cpf'].value, cnpj: e.target.elements['cliente-cnpj'].value, ie: e.target.elements['cliente-ie'].value, endereco: e.target.elements['cliente-endereco'].value, numero: e.target.elements['cliente-numero'].value, cep: e.target.elements['cliente-cep'].value, cidade: e.target.elements['cliente-cidade'].value, uf: e.target.elements['cliente-uf'].value, servicos: [] }); salvarDados(); renderizarClientes(); formCliente.reset(); });
-            formProduto.addEventListener('submit', e => { e.preventDefault(); produtos.push({ id: Date.now(), nome: e.target.elements['produto-nome'].value, quantidade: parseInt(e.target.elements['produto-quantidade'].value, 10) || 0, valor: parseFloat(e.target.elements['produto-valor'].value) || 0, formato: e.target.elements['produto-formato'].value, cor: e.target.elements['produto-cor'].value, papel: e.target.elements['produto-papel'].value, acabamento: e.target.elements['produto-acabamento'].value }); salvarDados(); renderizarProdutos(); formProduto.reset(); });
+            formProduto.addEventListener('submit', e => { e.preventDefault(); produtos.push({ id: Date.now(), nome: e.target.elements['produto-nome'].value, quantidade: parseInt(e.target.elements['produto-quantidade'].value, 10) || 1, valor: parseFloat(e.target.elements['produto-valor'].value) || 0, formato: e.target.elements['produto-formato'].value, cor: e.target.elements['produto-cor'].value, papel: e.target.elements['produto-papel'].value, acabamento: e.target.elements['produto-acabamento'].value }); salvarDados(); renderizarProdutos(); formProduto.reset(); });
 
             searchClienteInput.addEventListener('keyup', renderizarClientes);
             searchProdutoInput.addEventListener('keyup', renderizarProdutos);
@@ -601,12 +601,8 @@
             const gerarPDFRelatorioServicos = (cliente) => {
                 const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.setFontSize(18).text(`Relatório de Serviços - ${cliente.nome}`, 14, 22); doc.setFontSize(11).text("Gráfica Traços Ltda", 14, 30); doc.line(14, 32, 196, 32); doc.setFontSize(12).text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')}`, 196, 40, { align: 'right' });
                 const servicosOrdenados = [...cliente.servicos].sort((a, b) => new Date(b.data) - new Date(a.data));
-                const tableColumn = ["Data", "Descrição", "Qtd.", "Vlr. Unit.", "Valor Total"]; 
-                const tableRows = servicosOrdenados.map(s => {
-                    const valorUnitario = (s.valor && s.quantidade > 0) ? (s.valor / s.quantidade) : 0;
-                    return [new Date(s.data).toLocaleDateString('pt-BR', {timeZone: 'UTC'}), s.descricao, s.quantidade, formatCurrency(valorUnitario), formatCurrency(s.valor)];
-                });
-                doc.autoTable({ head: [tableColumn], body: tableRows, startY: 45, theme: 'grid', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 0: { halign: 'center', cellWidth: 25 }, 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
+                const tableColumn = ["Data", "Descrição", "Qtd.", "Valor Total"]; const tableRows = servicosOrdenados.map(s => [new Date(s.data).toLocaleDateString('pt-BR', {timeZone: 'UTC'}), s.descricao, s.quantidade, formatCurrency(s.valor)]);
+                doc.autoTable({ head: [tableColumn], body: tableRows, startY: 45, theme: 'grid', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 0: { halign: 'center', cellWidth: 25 }, 2: { halign: 'center' }, 3: { halign: 'right' } } });
                 doc.save(`Relatorio-Servicos-${cliente.nome}.pdf`);
             };
             

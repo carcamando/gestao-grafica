@@ -362,7 +362,7 @@
                 renderizarTudo();
             };
 
-            const formatCurrency = (value) => `R$ ${value.toFixed(2).replace('.', ',')}`;
+            const formatCurrency = (value, decimals = 2) => `R$ ${parseFloat(value).toFixed(decimals).replace('.', ',')}`;
             const renderizarTudo = () => { renderizarClientes(); renderizarProdutos(); renderizarOrcamentos(); };
             const atualizarSelects = () => {
                 selectOrcamentoCliente.innerHTML = '<option value="" disabled selected>Selecione...</option>';
@@ -543,8 +543,8 @@
                 const produto = produtos.find(p => p.id === editingProductId);
                 if(produto) {
                     produto.nome = formEditProduto.elements['edit-produto-nome'].value;
-                    produto.quantidade = parseInt(formEditProduto.elements['edit-produto-quantidade'].value, 10) || 1;
-                    produto.valor = parseFloat(formEditProduto.elements['edit-produto-valor'].value) || 0;
+                    produto.quantidade = parseInt(formEditProduto.elements['edit-produto-quantidade'].value, 10);
+                    produto.valor = parseFloat(formEditProduto.elements['edit-produto-valor'].value);
                     produto.formato = formEditProduto.elements['edit-produto-formato'].value;
                     produto.cor = formEditProduto.elements['edit-produto-cor'].value;
                     produto.papel = formEditProduto.elements['edit-produto-papel'].value;

@@ -362,7 +362,11 @@
                 renderizarTudo();
             };
 
-            const formatCurrency = (value, decimals = 2) => `R$ ${parseFloat(value).toFixed(decimals).replace('.', ',')}`;
+            const formatCurrency = (value, decimals = 2) => {
+                if (isNaN(value)) return "R$ 0,00";
+                return `R$ ${parseFloat(value).toFixed(decimals).replace('.', ',')}`;
+            }
+
             const renderizarTudo = () => { renderizarClientes(); renderizarProdutos(); renderizarOrcamentos(); };
             const atualizarSelects = () => {
                 selectOrcamentoCliente.innerHTML = '<option value="" disabled selected>Selecione...</option>';
@@ -469,7 +473,7 @@
                     document.getElementById('item-descricao').value = descricaoDetalhada.replace(/,(\s*,)+/g, ',').replace(/^,|,$/g, '').trim();
                     document.getElementById('item-quantidade').value = p.quantidade || 1;
                     const valorUnitario = (p.valor && p.quantidade > 0) ? (p.valor / p.quantidade) : 0;
-                    document.getElementById('item-valor-unitario').value = valorUnitario.toFixed(2);
+                    document.getElementById('item-valor-unitario').value = valorUnitario.toFixed(4); // Increased precision
                 }
             });
 
@@ -604,7 +608,7 @@
                 const tableColumn = ["Data", "Descrição", "Qtd.", "Vlr. Unit.", "Valor Total"]; 
                 const tableRows = servicosOrdenados.map(s => {
                     const valorUnitario = (s.valor && s.quantidade > 0) ? (s.valor / s.quantidade) : 0;
-                    return [new Date(s.data).toLocaleDateString('pt-BR', {timeZone: 'UTC'}), s.descricao, s.quantidade, formatCurrency(valorUnitario), formatCurrency(s.valor)];
+                    return [new Date(s.data).toLocaleDateString('pt-BR', {timeZone: 'UTC'}), s.descricao, s.quantidade, formatCurrency(valorUnitario, 4), formatCurrency(s.valor)];
                 });
                 doc.autoTable({ head: [tableColumn], body: tableRows, startY: 45, theme: 'grid', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 0: { halign: 'center', cellWidth: 25 }, 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
                 doc.save(`Relatorio-Servicos-${cliente.nome}.pdf`);

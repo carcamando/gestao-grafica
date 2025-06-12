@@ -28,6 +28,10 @@
         }
         .modal-backdrop.visible .modal-content { transform: scale(1); }
         .edit-view { display: none; }
+        /* Adicionando um fundo claro para todos os inputs, selects e textareas */
+        input, select, textarea {
+            background-color: #f9fafb; /* bg-gray-50 */
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -86,15 +90,15 @@
                         <form id="form-orcamento">
                             <div class="mb-4">
                                 <label for="orcamento-cliente" class="block text-sm font-medium text-gray-700">Cliente</label>
-                                <select id="orcamento-cliente" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></select>
+                                <select id="orcamento-cliente" required class="mt-1 block w-full rounded-md border border-gray-400 shadow-sm"></select>
                             </div>
                             <fieldset class="border p-4 rounded-md mb-4">
                                 <legend class="text-lg font-medium text-gray-800 px-2">Adicionar Itens</legend>
                                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4" id="form-item-container">
-                                    <div class="md:col-span-4"><label for="item-produto" class="block text-sm font-medium">Produto</label><select id="item-produto" class="mt-1 block w-full rounded-md"></select></div>
-                                    <div class="md:col-span-8"><label for="item-descricao" class="block text-sm font-medium">Descrição</label><input type="text" id="item-descricao" class="mt-1 block w-full rounded-md"></div>
-                                    <div class="md:col-span-4"><label for="item-quantidade" class="block text-sm font-medium">Qtd.</label><input type="number" id="item-quantidade" min="1" class="mt-1 block w-full rounded-md"></div>
-                                    <div class="md:col-span-4"><label for="item-valor-unitario" class="block text-sm font-medium">Valor Unit. (R$)</label><input type="number" step="0.01" id="item-valor-unitario" min="0" class="mt-1 block w-full rounded-md"></div>
+                                    <div class="md:col-span-4"><label for="item-produto" class="block text-sm font-medium">Produto</label><select id="item-produto" class="mt-1 block w-full rounded-md border border-gray-400"></select></div>
+                                    <div class="md:col-span-8"><label for="item-descricao" class="block text-sm font-medium">Descrição</label><input type="text" id="item-descricao" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                                    <div class="md:col-span-4"><label for="item-quantidade" class="block text-sm font-medium">Qtd.</label><input type="number" id="item-quantidade" min="1" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                                    <div class="md:col-span-4"><label for="item-valor-unitario" class="block text-sm font-medium">Valor Unit. (R$)</label><input type="number" step="0.01" id="item-valor-unitario" min="0" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                                     <div class="md:col-span-4 flex items-end"><button type="button" id="add-item-btn" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Adicionar</button></div>
                                 </div>
                             </fieldset>
@@ -108,7 +112,7 @@
                         <h3 class="text-2xl font-bold mb-4 text-gray-700">Orçamentos Gerados</h3>
                         <div class="mb-4">
                             <label for="search-orcamento-input" class="block text-sm font-medium text-gray-700">Pesquisar por Cliente</label>
-                            <input type="text" id="search-orcamento-input" placeholder="Digite o nome do cliente..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <input type="text" id="search-orcamento-input" placeholder="Digite o nome do cliente..." class="mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
                         <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nº</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Itens</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Valor Total</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-orcamentos" class="bg-white divide-y"></tbody></table></div>
                     </div>
@@ -119,23 +123,23 @@
                     <div class="bg-white p-6 rounded-lg shadow-md">
                         <h2 class="text-2xl font-bold mb-4 text-gray-700">Novo Cliente</h2>
                         <form id="form-cliente" class="grid grid-cols-1 md:grid-cols-6 gap-4 border-b pb-6 mb-6">
-                            <div class="md:col-span-3"><label for="cliente-nome" class="block text-sm font-medium">Nome</label><input type="text" id="cliente-nome" required class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-3"><label for="cliente-telefone" class="block text-sm font-medium">Telefone/WhatsApp</label><input type="tel" id="cliente-telefone" required class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-2"><label for="cliente-cpf" class="block text-sm font-medium">CPF</label><input type="text" id="cliente-cpf" class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-2"><label for="cliente-cnpj" class="block text-sm font-medium">CNPJ</label><input type="text" id="cliente-cnpj" class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-2"><label for="cliente-ie" class="block text-sm font-medium">Inscr. Est.</label><input type="text" id="cliente-ie" class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-6"><label for="cliente-email" class="block text-sm font-medium">Email (Opcional)</label><input type="email" id="cliente-email" class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-4"><label for="cliente-endereco" class="block text-sm font-medium">Endereço</label><input type="text" id="cliente-endereco" class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-2"><label for="cliente-numero" class="block text-sm font-medium">Número</label><input type="text" id="cliente-numero" class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-2"><label for="cliente-cep" class="block text-sm font-medium">CEP</label><input type="text" id="cliente-cep" class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-3"><label for="cliente-cidade" class="block text-sm font-medium">Cidade</label><input type="text" id="cliente-cidade" class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-1"><label for="cliente-uf" class="block text-sm font-medium">UF</label><input type="text" id="cliente-uf" maxlength="2" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-3"><label for="cliente-nome" class="block text-sm font-medium">Nome</label><input type="text" id="cliente-nome" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-3"><label for="cliente-telefone" class="block text-sm font-medium">Telefone/WhatsApp</label><input type="tel" id="cliente-telefone" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-2"><label for="cliente-cpf" class="block text-sm font-medium">CPF</label><input type="text" id="cliente-cpf" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-2"><label for="cliente-cnpj" class="block text-sm font-medium">CNPJ</label><input type="text" id="cliente-cnpj" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-2"><label for="cliente-ie" class="block text-sm font-medium">Inscr. Est.</label><input type="text" id="cliente-ie" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-6"><label for="cliente-email" class="block text-sm font-medium">Email (Opcional)</label><input type="email" id="cliente-email" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-4"><label for="cliente-endereco" class="block text-sm font-medium">Endereço</label><input type="text" id="cliente-endereco" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-2"><label for="cliente-numero" class="block text-sm font-medium">Número</label><input type="text" id="cliente-numero" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-2"><label for="cliente-cep" class="block text-sm font-medium">CEP</label><input type="text" id="cliente-cep" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-3"><label for="cliente-cidade" class="block text-sm font-medium">Cidade</label><input type="text" id="cliente-cidade" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-1"><label for="cliente-uf" class="block text-sm font-medium">UF</label><input type="text" id="cliente-uf" maxlength="2" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                             <div class="md:col-span-6"><button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Adicionar Cliente</button></div>
                         </form>
                         <h3 class="text-2xl font-bold mb-4 text-gray-700">Clientes Cadastrados</h3>
                         <div class="mb-4">
                             <label for="search-cliente-input" class="block text-sm font-medium text-gray-700">Pesquisar por Nome</label>
-                            <input type="text" id="search-cliente-input" placeholder="Digite o nome do cliente..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <input type="text" id="search-cliente-input" placeholder="Digite o nome do cliente..." class="mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
                         <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telefone</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">CPF/CNPJ</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-clientes" class="bg-white divide-y"></tbody></table></div>
                     </div>
@@ -146,13 +150,13 @@
                     <div class="bg-white p-6 rounded-lg shadow-md">
                         <h2 class="text-2xl font-bold mb-4 text-gray-700">Novo Produto</h2>
                         <form id="form-produto" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="md:col-span-3"><label for="produto-nome" class="block text-sm font-medium">Nome do Produto</label><input type="text" id="produto-nome" required class="mt-1 block w-full rounded-md"></div>
-                            <div><label for="produto-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" id="produto-quantidade" min="1" class="mt-1 block w-full rounded-md"></div>
-                            <div><label for="produto-formato" class="block text-sm font-medium">Formato</label><input type="text" id="produto-formato" class="mt-1 block w-full rounded-md"></div>
-                            <div><label for="produto-cor" class="block text-sm font-medium">Cor Impressão</label><input type="text" id="produto-cor" class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-2"><label for="produto-papel" class="block text-sm font-medium">Tipo de Papel</label><input type="text" id="produto-papel" class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-2"><label for="produto-acabamento" class="block text-sm font-medium">Acabamento</label><input type="text" id="produto-acabamento" class="mt-1 block w-full rounded-md"></div>
-                            <div class="md:col-span-1"><label for="produto-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" id="produto-valor" min="0" class="mt-1 block w-full rounded-md"></div>
+                            <div class="md:col-span-3"><label for="produto-nome" class="block text-sm font-medium">Nome do Produto</label><input type="text" id="produto-nome" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div><label for="produto-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" id="produto-quantidade" min="1" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div><label for="produto-formato" class="block text-sm font-medium">Formato</label><input type="text" id="produto-formato" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div><label for="produto-cor" class="block text-sm font-medium">Cor Impressão</label><input type="text" id="produto-cor" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-2"><label for="produto-papel" class="block text-sm font-medium">Tipo de Papel</label><input type="text" id="produto-papel" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-2"><label for="produto-acabamento" class="block text-sm font-medium">Acabamento</label><input type="text" id="produto-acabamento" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-1"><label for="produto-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" id="produto-valor" min="0" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                             <div class="md:col-span-3"><button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Adicionar Produto</button></div>
                         </form>
                     </div>
@@ -160,7 +164,7 @@
                         <h3 class="text-2xl font-bold mb-4 text-gray-700">Produtos Cadastrados</h3>
                          <div class="mb-4">
                             <label for="search-produto-input" class="block text-sm font-medium text-gray-700">Pesquisar por Nome</label>
-                            <input type="text" id="search-produto-input" placeholder="Digite o nome do produto..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <input type="text" id="search-produto-input" placeholder="Digite o nome do produto..." class="mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
                         <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Formato</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Papel</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acabamento</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-produtos" class="bg-white divide-y"></tbody></table></div>
                     </div>
@@ -177,17 +181,17 @@
                  <button id="close-edit-cliente-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             </div>
             <form id="form-edit-cliente" class="grid grid-cols-1 md:grid-cols-6 gap-4">
-                <div class="md:col-span-3"><label for="edit-cliente-nome" class="block text-sm font-medium">Nome</label><input type="text" id="edit-cliente-nome" required class="mt-1 block w-full rounded-md"></div>
-                <div class="md:col-span-3"><label for="edit-cliente-telefone" class="block text-sm font-medium">Telefone/WhatsApp</label><input type="tel" id="edit-cliente-telefone" required class="mt-1 block w-full rounded-md"></div>
-                <div class="md:col-span-2"><label for="edit-cliente-cpf" class="block text-sm font-medium">CPF</label><input type="text" id="edit-cliente-cpf" class="mt-1 block w-full rounded-md"></div>
-                <div class="md:col-span-2"><label for="edit-cliente-cnpj" class="block text-sm font-medium">CNPJ</label><input type="text" id="edit-cliente-cnpj" class="mt-1 block w-full rounded-md"></div>
-                <div class="md:col-span-2"><label for="edit-cliente-ie" class="block text-sm font-medium">Inscr. Est.</label><input type="text" id="edit-cliente-ie" class="mt-1 block w-full rounded-md"></div>
-                <div class="md:col-span-6"><label for="edit-cliente-email" class="block text-sm font-medium">Email</label><input type="email" id="edit-cliente-email" class="mt-1 block w-full rounded-md"></div>
-                <div class="md:col-span-4"><label for="edit-cliente-endereco" class="block text-sm font-medium">Endereço</label><input type="text" id="edit-cliente-endereco" class="mt-1 block w-full rounded-md"></div>
-                <div class="md:col-span-2"><label for="edit-cliente-numero" class="block text-sm font-medium">Número</label><input type="text" id="edit-cliente-numero" class="mt-1 block w-full rounded-md"></div>
-                <div class="md:col-span-2"><label for="edit-cliente-cep" class="block text-sm font-medium">CEP</label><input type="text" id="edit-cliente-cep" class="mt-1 block w-full rounded-md"></div>
-                <div class="md:col-span-3"><label for="edit-cliente-cidade" class="block text-sm font-medium">Cidade</label><input type="text" id="edit-cliente-cidade" class="mt-1 block w-full rounded-md"></div>
-                <div class="md:col-span-1"><label for="edit-cliente-uf" class="block text-sm font-medium">UF</label><input type="text" id="edit-cliente-uf" maxlength="2" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-3"><label for="edit-cliente-nome" class="block text-sm font-medium">Nome</label><input type="text" id="edit-cliente-nome" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-3"><label for="edit-cliente-telefone" class="block text-sm font-medium">Telefone/WhatsApp</label><input type="tel" id="edit-cliente-telefone" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-2"><label for="edit-cliente-cpf" class="block text-sm font-medium">CPF</label><input type="text" id="edit-cliente-cpf" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-2"><label for="edit-cliente-cnpj" class="block text-sm font-medium">CNPJ</label><input type="text" id="edit-cliente-cnpj" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-2"><label for="edit-cliente-ie" class="block text-sm font-medium">Inscr. Est.</label><input type="text" id="edit-cliente-ie" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-6"><label for="edit-cliente-email" class="block text-sm font-medium">Email</label><input type="email" id="edit-cliente-email" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-4"><label for="edit-cliente-endereco" class="block text-sm font-medium">Endereço</label><input type="text" id="edit-cliente-endereco" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-2"><label for="edit-cliente-numero" class="block text-sm font-medium">Número</label><input type="text" id="edit-cliente-numero" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-2"><label for="edit-cliente-cep" class="block text-sm font-medium">CEP</label><input type="text" id="edit-cliente-cep" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-3"><label for="edit-cliente-cidade" class="block text-sm font-medium">Cidade</label><input type="text" id="edit-cliente-cidade" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-1"><label for="edit-cliente-uf" class="block text-sm font-medium">UF</label><input type="text" id="edit-cliente-uf" maxlength="2" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                 <div class="md:col-span-6"><button type="submit" class="w-full bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600">Salvar Alterações</button></div>
             </form>
         </div>
@@ -201,13 +205,13 @@
                  <button id="close-edit-produto-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             </div>
             <form id="form-edit-produto" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="md:col-span-2"><label for="edit-produto-nome" class="block text-sm font-medium">Nome do Produto</label><input type="text" id="edit-produto-nome" required class="mt-1 block w-full rounded-md"></div>
-                <div><label for="edit-produto-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" id="edit-produto-quantidade" min="1" class="mt-1 block w-full rounded-md"></div>
-                <div><label for="edit-produto-formato" class="block text-sm font-medium">Formato</label><input type="text" id="edit-produto-formato" class="mt-1 block w-full rounded-md"></div>
-                <div><label for="edit-produto-cor" class="block text-sm font-medium">Cor Impressão</label><input type="text" id="edit-produto-cor" class="mt-1 block w-full rounded-md"></div>
-                <div><label for="edit-produto-papel" class="block text-sm font-medium">Tipo de Papel</label><input type="text" id="edit-produto-papel" class="mt-1 block w-full rounded-md"></div>
-                <div class="md:col-span-2"><label for="edit-produto-acabamento" class="block text-sm font-medium">Acabamento</label><input type="text" id="edit-produto-acabamento" class="mt-1 block w-full rounded-md"></div>
-                <div class="md:col-span-2"><label for="edit-produto-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" id="edit-produto-valor" min="0" class="mt-1 block w-full rounded-md"></div>
+                <div class="md:col-span-2"><label for="edit-produto-nome" class="block text-sm font-medium">Nome do Produto</label><input type="text" id="edit-produto-nome" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-produto-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" id="edit-produto-quantidade" min="1" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-produto-formato" class="block text-sm font-medium">Formato</label><input type="text" id="edit-produto-formato" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-produto-cor" class="block text-sm font-medium">Cor Impressão</label><input type="text" id="edit-produto-cor" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-produto-papel" class="block text-sm font-medium">Tipo de Papel</label><input type="text" id="edit-produto-papel" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-2"><label for="edit-produto-acabamento" class="block text-sm font-medium">Acabamento</label><input type="text" id="edit-produto-acabamento" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-2"><label for="edit-produto-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" id="edit-produto-valor" min="0" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                 <div class="md:col-span-2"><button type="submit" class="w-full bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600">Salvar Alterações</button></div>
             </form>
         </div>
@@ -227,10 +231,10 @@
             <div class="bg-gray-50 p-4 rounded-lg mb-6">
                 <h3 class="text-xl font-bold mb-3">Adicionar Novo Serviço</h3>
                 <form id="form-servico" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="md:col-span-3"><label for="servico-descricao-input" class="block text-sm font-medium">Serviço/Descrição</label><input type="text" id="servico-descricao-input" required class="mt-1 block w-full rounded-md"></div>
-                    <div><label for="servico-data" class="block text-sm font-medium">Data</label><input type="date" id="servico-data" required class="mt-1 block w-full rounded-md"></div>
-                    <div><label for="servico-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" min="1" id="servico-quantidade" required class="mt-1 block w-full rounded-md"></div>
-                    <div><label for="servico-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" min="0" id="servico-valor" required class="mt-1 block w-full rounded-md"></div>
+                    <div class="md:col-span-3"><label for="servico-descricao-input" class="block text-sm font-medium">Serviço/Descrição</label><input type="text" id="servico-descricao-input" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                    <div><label for="servico-data" class="block text-sm font-medium">Data</label><input type="date" id="servico-data" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                    <div><label for="servico-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" min="1" id="servico-quantidade" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                    <div><label for="servico-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" min="0" id="servico-valor" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
                     <div class="md:col-span-3"><label for="servico-anexo" class="block text-sm font-medium">Anexar Arquivo</label><input type="file" id="servico-anexo" class="mt-1 block w-full text-sm"></div>
                     <div class="md:col-span-3"><button type="submit" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Adicionar Serviço</button></div>
                 </form>
@@ -363,7 +367,7 @@
             };
 
             const formatCurrency = (value, decimals = 2) => {
-                if (isNaN(value)) return "R$ 0,00";
+                if (isNaN(value) || value === null) return "R$ 0,00";
                 return `R$ ${parseFloat(value).toFixed(decimals).replace('.', ',')}`;
             }
 

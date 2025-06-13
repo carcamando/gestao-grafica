@@ -28,6 +28,11 @@
         }
         .modal-backdrop.visible .modal-content { transform: scale(1); }
         .edit-view { display: none; }
+        /* Adicionando um fundo claro e borda para todos os inputs, selects e textareas */
+        input, select, textarea {
+            background-color: #f9fafb; /* bg-gray-50 */
+            border: 1px solid #9ca3af; /* border-gray-400 */
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -608,8 +613,31 @@
                 if (btn.id === 'gerar-relatorio-servicos-btn') { const cliente = clientes.find(c => c.id === activeClientId); if (cliente) gerarPDFRelatorioServicos(cliente); return; }
                 const servicoId = parseInt(btn.dataset.servicoId); if (!servicoId) return;
                 const cliente = clientes.find(c => c.id === activeClientId);
-                if (btn.classList.contains('edit-servico-btn')) { alert("A edição de serviços será implementada em uma futura janela modal, como a de clientes e produtos.");
+                if (btn.classList.contains('edit-servico-btn')) { 
+                    editingServiceId = servicoId;
+                    const servico = cliente.servicos.find(s => s.id === servicoId);
+                    formEditServico.elements['edit-servico-descricao-input'].value = servico.descricao || '';
+                    formEditServico.elements['edit-servico-data'].value = servico.data || '';
+                    formEditServico.elements['edit-servico-quantidade'].value = servico.quantidade || '';
+                    formEditServico.elements['edit-servico-valor'].value = servico.valor || '';
+                    editServicoModal.classList.add('visible');
                 } else if (btn.classList.contains('delete-servico-btn')) { cliente.servicos = cliente.servicos.filter(s => s.id !== servicoId); salvarDados(); renderizarServicos(activeClientId);  }
+            });
+            
+            closeEditServicoModalBtn.addEventListener('click', () => editServicoModal.classList.remove('visible'));
+            formEditServico.addEventListener('submit', (e) => {
+                 e.preventDefault();
+                 const cliente = clientes.find(c => c.id === activeClientId);
+                 const servico = cliente.servicos.find(s => s.id === editingServiceId);
+                 if (servico) {
+                    servico.descricao = formEditServico.elements['edit-servico-descricao-input'].value;
+                    servico.data = formEditServico.elements['edit-servico-data'].value;
+                    servico.quantidade = parseInt(formEditServico.elements['edit-servico-quantidade'].value, 10);
+                    servico.valor = parseFloat(formEditServico.elements['edit-servico-valor'].value);
+                    salvarDados();
+                    renderizarServicos(activeClientId);
+                    editServicoModal.classList.remove('visible');
+                 }
             });
 
             const gerarPDFOrcamento = (orcamento) => {

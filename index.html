@@ -239,6 +239,23 @@
             <div id="lista-servicos-container" class="overflow-x-auto"></div>
         </div>
     </div>
+    
+     <!-- Modal de Edição de Serviço -->
+    <div id="edit-servico-modal" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                 <h2 class="text-2xl font-bold text-gray-700">Editar Serviço</h2>
+                 <button id="close-edit-servico-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            </div>
+            <form id="form-edit-servico" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="md:col-span-3"><label for="edit-servico-descricao-input" class="block text-sm font-medium">Serviço/Descrição</label><input type="text" id="edit-servico-descricao-input" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-servico-data" class="block text-sm font-medium">Data</label><input type="date" id="edit-servico-data" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-servico-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" min="1" id="edit-servico-quantidade" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-servico-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" min="0" id="edit-servico-valor" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-3"><button type="submit" class="w-full bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600">Salvar Alterações</button></div>
+            </form>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -306,7 +323,7 @@
 
         function runApp() {
             let clientes = [], produtos = [], orcamentos = [], currentItems = [];
-            let orcamentoCounter = 1, servicoCounter = 1, activeClientId = null, editingBudgetId = null, editingClientId = null, editingProductId = null;
+            let orcamentoCounter = 1, servicoCounter = 1, activeClientId = null, editingBudgetId = null, editingClientId = null, editingProductId = null, editingServiceId = null;
             
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
@@ -337,6 +354,9 @@
             const editProdutoModal = document.getElementById('edit-produto-modal');
             const formEditProduto = document.getElementById('form-edit-produto');
             const closeEditProdutoModalBtn = document.getElementById('close-edit-produto-modal-btn');
+            const editServicoModal = document.getElementById('edit-servico-modal');
+            const formEditServico = document.getElementById('form-edit-servico');
+            const closeEditServicoModalBtn = document.getElementById('close-edit-servico-modal-btn');
             
             const docRef = doc(db, "data", userId);
 
@@ -571,7 +591,7 @@
                     listaServicosContainer.innerHTML = '<p class="text-center py-4 text-gray-500">Nenhum serviço cadastrado.</p>';
                 } else {
                     relatorioBtn.style.display = 'inline-block';
-                    listaServicosContainer.innerHTML = `<table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="p-2 text-left text-xs font-medium uppercase">Serviço</th><th class="p-2 text-left text-xs font-medium uppercase">Data</th><th class="p-2 text-left text-xs font-medium uppercase">Qtd.</th><th class="p-2 text-left text-xs font-medium uppercase">Valor</th><th class="p-2 text-left text-xs font-medium uppercase">Anexo</th><th class="p-2 text-left text-xs font-medium uppercase">Ações</th></tr></thead><tbody>${servicosOrdenados.map(s=>`<tr id="servico-${s.id}"><td class="p-2"><span class="data-view">${s.descricao}</span><input type="text" value="${s.descricao}" class="edit-view w-full rounded-md"></td><td class="p-2"><span class="data-view">${new Date(s.data).toLocaleDateString('pt-BR',{timeZone:'UTC'})}</span><input type="date" value="${s.data}" class="edit-view w-full rounded-md"></td><td class="p-2"><span class="data-view">${s.quantidade}</span><input type="number" min="1" value="${s.quantidade}" class="edit-view w-full rounded-md"></td><td class="p-2"><span class="data-view">${formatCurrency(s.valor)}</span><input type="number" step="0.01" value="${s.valor}" class="edit-view w-full rounded-md"></td><td class="p-2">${s.anexo?`<a href="${s.anexo.dados}" download="${s.anexo.nome}" class="text-blue-600">Baixar</a>`:'N/A'}</td><td class="p-2"><div class="flex items-center space-x-2"><button data-servico-id="${s.id}" class="edit-servico-btn text-blue-600">Editar</button><button data-servico-id="${s.id}" class="save-servico-btn text-blue-600" style="display:none;">Salvar</button><button data-servico-id="${s.id}" class="delete-servico-btn text-red-600">Excluir</button></div></td></tr>`).join('')}</tbody></table>`;
+                    listaServicosContainer.innerHTML = `<table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="p-2 text-left text-xs font-medium uppercase">Serviço</th><th class="p-2 text-left text-xs font-medium uppercase">Data</th><th class="p-2 text-left text-xs font-medium uppercase">Qtd.</th><th class="p-2 text-left text-xs font-medium uppercase">Valor</th><th class="p-2 text-left text-xs font-medium uppercase">Anexo</th><th class="p-2 text-left text-xs font-medium uppercase">Ações</th></tr></thead><tbody>${servicosOrdenados.map(s=>`<tr id="servico-${s.id}"><td class="p-2">${s.descricao}</td><td class="p-2">${new Date(s.data).toLocaleDateString('pt-BR',{timeZone:'UTC'})}</td><td class="p-2">${s.quantidade}</td><td class="p-2">${formatCurrency(s.valor)}</td><td class="p-2">${s.anexo?`<a href="${s.anexo.dados}" download="${s.anexo.nome}" class="text-blue-600">Baixar</a>`:'N/A'}</td><td class="p-2"><div class="flex items-center space-x-2"><button data-servico-id="${s.id}" class="edit-servico-btn text-blue-600">Editar</button><button data-servico-id="${s.id}" class="delete-servico-btn text-red-600">Excluir</button></div></td></tr>`).join('')}</tbody></table>`;
                 }
             };
             
@@ -587,9 +607,8 @@
                 const btn = e.target.closest('button'); if(!btn) return;
                 if (btn.id === 'gerar-relatorio-servicos-btn') { const cliente = clientes.find(c => c.id === activeClientId); if (cliente) gerarPDFRelatorioServicos(cliente); return; }
                 const servicoId = parseInt(btn.dataset.servicoId); if (!servicoId) return;
-                const cliente = clientes.find(c => c.id === activeClientId); const row = document.getElementById(`servico-${servicoId}`);
-                if (btn.classList.contains('edit-servico-btn')) { row.querySelectorAll('.data-view').forEach(el => el.style.display = 'none'); row.querySelectorAll('.edit-view').forEach(el => el.style.display = 'block'); btn.style.display = 'none'; row.querySelector('.save-servico-btn').style.display = 'inline-block';
-                } else if (btn.classList.contains('save-servico-btn')) { const servico = cliente.servicos.find(s => s.id === servicoId); servico.descricao = row.querySelector('input[type="text"]').value; servico.data = row.querySelector('input[type="date"]').value; servico.quantidade = parseInt(row.querySelectorAll('input[type="number"]')[0].value, 10); servico.valor = parseFloat(row.querySelectorAll('input[type="number"]')[1].value); salvarDados(); renderizarServicos(activeClientId);
+                const cliente = clientes.find(c => c.id === activeClientId);
+                if (btn.classList.contains('edit-servico-btn')) { alert("A edição de serviços será implementada em uma futura janela modal, como a de clientes e produtos.");
                 } else if (btn.classList.contains('delete-servico-btn')) { cliente.servicos = cliente.servicos.filter(s => s.id !== servicoId); salvarDados(); renderizarServicos(activeClientId);  }
             });
 

@@ -147,7 +147,7 @@
                     </div>
                 </section>
 
-                <!-- Seção de Serviços -->
+                <!-- Seção de Serviços Cadastrados -->
                 <section id="servicos-cadastrados" class="tab-content" style="display: none;">
                     <div class="bg-white p-6 rounded-lg shadow-md">
                         <h2 class="text-2xl font-bold mb-4 text-gray-700">Novo Serviço</h2>
@@ -652,7 +652,7 @@
                 const { jsPDF } = window.jspdf; const doc = new jsPDF(); const cliente = orcamento.cliente; let startY = 40;
                 doc.setFontSize(18).text("Orçamento - Gráfica Traços Ltda", 14, 22); doc.setFontSize(11).text("Contato: (54) 99617-2271", 14, 30); doc.line(14, 32, 196, 32); doc.setFontSize(12); doc.text(`Data: ${orcamento.data}`, 196, startY, { align: 'right' }); startY += 10; doc.text(`Cliente: ${cliente.nome}`, 14, startY);
                 if (cliente.cpf || cliente.cnpj) { startY += 7; doc.text(`CPF/CNPJ: ${cliente.cpf || cliente.cnpj}`, 14, startY); }
-                if (cliente.endereco) { startY += 7; doc.text(`Endereço: ${[cliente.endereco, cliente.numero, cliente.cidade, cliente.uf.toUpperCase()].filter(Boolean).join(', ')}`, 14, startY); }
+                if (cliente.endereco) { startY += 7; doc.text(`Endereço: ${[cliente.endereco, cliente.bairro, cliente.cidade, cliente.uf.toUpperCase()].filter(Boolean).join(', ')}`, 14, startY); }
                 doc.autoTable({ head: [["Serviço", "Descrição", "Qtd.", "Vlr. Unit.", "Vlr. Total"]], body: orcamento.items.map(i => [i.nome, i.descricao, i.quantidade, formatCurrency(i.valorUnitario), formatCurrency(i.valorTotal)]), startY: startY + 5, theme: 'striped', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
                 let finalY = doc.lastAutoTable.finalY; doc.setFontSize(14).setFont(undefined, 'bold').text('Total:', 148, finalY + 12, {align: 'right'}); doc.text(formatCurrency(orcamento.total), 196, finalY + 12, {align: 'right'}); doc.setFontSize(10).setFont(undefined, 'normal').text("Orçamento válido por 30 dias.", 14, finalY + 25); doc.save(`Orcamento-${cliente.nome}-${orcamento.data}.pdf`);
             };

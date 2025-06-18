@@ -721,23 +721,28 @@
                 
                 const produtosOrdenados = [...servicosCadastrados].sort((a, b) => a.nome.localeCompare(b.nome));
                 
-                const tableColumn = ["Nome do Serviço", "Qtd.", "Formato", "Cor", "Papel", "Acabamento", "Valor Total"];
-                const tableRows = produtosOrdenados.map(p => [
-                    p.nome || 'N/A',
-                    p.quantidade || 'N/A',
-                    p.formato || 'N/A',
-                    p.cor || 'N/A',
-                    p.papel || 'N/A',
-                    p.acabamento || 'N/A',
-                    formatCurrency(p.valor)
-                ]);
+                const tableColumn = ["Nome do Serviço", "Qtd.", "Formato", "Cor", "Papel", "Acabamento", "Vlr. Unit.", "Valor Total"];
+                const tableRows = produtosOrdenados.map(p => {
+                    const valorUnitario = (p.valor && p.quantidade > 0) ? (p.valor / p.quantidade) : 0;
+                    return [
+                        p.nome || 'N/A',
+                        p.quantidade || 'N/A',
+                        p.formato || 'N/A',
+                        p.cor || 'N/A',
+                        p.papel || 'N/A',
+                        p.acabamento || 'N/A',
+                        formatCurrency(valorUnitario, 4),
+                        formatCurrency(p.valor)
+                    ];
+                });
 
                 doc.autoTable({
                     head: [tableColumn],
                     body: tableRows,
                     startY: 45,
                     theme: 'grid',
-                    headStyles: { fillColor: [30, 64, 175] }
+                    headStyles: { fillColor: [30, 64, 175] },
+                    columnStyles: { 6: { halign: 'right' }, 7: { halign: 'right' } }
                 });
 
                 doc.save(`Relatorio-Servicos-${new Date().toLocaleDateString('pt-BR')}.pdf`);

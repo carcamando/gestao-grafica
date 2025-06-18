@@ -428,7 +428,7 @@
             const renderizarOrcamentos = () => {
                 const searchTerm = searchOrcamentoInput.value.toLowerCase();
                 let filteredOrcamentos = orcamentos.filter(orc => orc.clienteNome.toLowerCase().includes(searchTerm));
-                filteredOrcamentos.sort((a, b) => new Date(b.data) - new Date(a.data));
+                filteredOrcamentos.sort((a, b) => b.id - a.id);
                 listaOrcamentos.innerHTML = filteredOrcamentos.length === 0 ? '<tr><td colspan="5" class="text-center py-4 text-gray-500">Nenhum orçamento</td></tr>' : filteredOrcamentos.map(orc => `<tr class="hover:bg-gray-50"><td class="px-6 py-4">${orc.clienteNome}</td><td class="px-6 py-4">${orc.items.map(i=>i.nome).join(', ')}</td><td class="px-6 py-4">${formatCurrency(orc.total)}</td><td class="px-6 py-4">${new Date(orc.data).toLocaleDateString('pt-BR')}</td><td class="px-6 py-4"><div class="flex space-x-2"><button data-id="${orc.id}" class="edit-orcamento-btn text-blue-600 hover:text-blue-900">Editar</button><button data-id="${orc.id}" class="delete-orcamento-btn text-red-600 hover:text-red-900">Excluir</button><button data-id="${orc.id}" class="pdf-orcamento-btn text-purple-600 hover:text-purple-900">PDF</button></div></td></tr>`).join('');
             };
             
@@ -665,20 +665,45 @@
                 let startY = 40;
                 doc.setFontSize(18).text("Orçamento - Gráfica Traços Ltda", 14, 22); doc.setFontSize(11).text("Contato: (54) 99617-2271", 14, 30); doc.line(14, 32, 196, 32); doc.setFontSize(12); doc.text(`Data: ${new Date(orcamento.data).toLocaleDateString('pt-BR')}`, 196, startY, { align: 'right' }); startY += 10; doc.text(`Cliente: ${cliente.nome}`, 14, startY);
                 if (cliente.cpf || cliente.cnpj) { startY += 7; doc.text(`CPF/CNPJ: ${cliente.cpf || cliente.cnpj}`, 14, startY); }
-                if (cliente.endereco) { startY += 7; doc.text(`Endereço: ${[cliente.endereco, cliente.bairro, cliente.cidade, cliente.uf.toUpperCase()].filter(Boolean).join(', ')}`, 14, startY); }
+                if (cliente.endereco) { startY += 7; doc.text(`Endereço: ${[cliente.endereco, cliente.bairro, cliente.numero, cliente.cidade, cliente.uf.toUpperCase()].filter(Boolean).join(', ')}`, 14, startY); }
+                if (cliente.cep) { startY += 7; doc.text(`CEP: ${cliente.cep}`, 14, startY); }
+                if (cliente.telefone) { startY += 7; doc.text(`Telefone: ${cliente.telefone}`, 14, startY); }
+
                 doc.autoTable({ head: [["Serviço", "Descrição", "Qtd.", "Vlr. Unit.", "Vlr. Total"]], body: orcamento.items.map(i => [i.nome, i.descricao, i.quantidade, formatCurrency(i.valorUnitario), formatCurrency(i.valorTotal)]), startY: startY + 5, theme: 'striped', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
                 let finalY = doc.lastAutoTable.finalY; doc.setFontSize(14).setFont(undefined, 'bold').text('Total:', 148, finalY + 12, {align: 'right'}); doc.text(formatCurrency(orcamento.total), 196, finalY + 12, {align: 'right'}); doc.setFontSize(10).setFont(undefined, 'normal').text("Orçamento válido por 30 dias.", 14, finalY + 25); doc.save(`Orcamento-${cliente.nome}-${new Date(orcamento.data).toLocaleDateString('pt-BR')}.pdf`);
             };
             
             const gerarPDFRelatorioServicos = (cliente) => {
-                const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.setFontSize(18).text(`Relatório de Serviços - ${cliente.nome}`, 14, 22); doc.setFontSize(11).text("Gráfica Traços Ltda", 14, 30); doc.line(14, 32, 196, 32); doc.setFontSize(12).text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')}`, 196, 40, { align: 'right' });
+                const { jsPDF } = window.jspdf; const doc = new jsPDF(); 
+                doc.setFontSize(18).text(`Relatório de Serviços - ${cliente.nome}`, 14, 22);
+                doc.setFontSize(11).text("Gráfica Traços Ltda", 14, 30);
+                doc.line(14, 32, 196, 32);
+                let startY = 40;
+                doc.setFontSize(12).text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')}`, 196, startY, { align: 'right' });
+                startY += 10;
+                
+                doc.setFontSize(10).setFont(undefined, "bold").text("DADOS DO CLIENTE", 14, startY);
+                startY += 7;
+                doc.setFontSize(10).setFont(undefined, "normal");
+                
+                if (cliente.cpf || cliente.cnpj) { doc.text(`CPF/CNPJ: ${cliente.cpf || cliente.cnpj}`, 14, startY); }
+                if (cliente.telefone) { doc.text(`Telefone: ${cliente.telefone}`, 105, startY, {align: 'center'}); }
+                startY += 7;
+                
+                const enderecoCompleto = [cliente.endereco, cliente.numero, cliente.bairro].filter(Boolean).join(', ');
+                if (enderecoCompleto) { doc.text(`Endereço: ${enderecoCompleto}`, 14, startY); }
+                 startY += 7;
+                const cidadeUFCEP = `${cliente.cidade || ''} - ${cliente.uf.toUpperCase() || ''}, CEP: ${cliente.cep || ''}`;
+                if (cidadeUFCEP.replace(/[,-]/g, '').trim() !== '') { doc.text(cidadeUFCEP, 14, startY); }
+                startY += 10;
+
                 const servicosOrdenados = [...cliente.servicos].sort((a, b) => new Date(b.data) - new Date(a.data));
                 const tableColumn = ["Data", "Descrição", "Qtd.", "Vlr. Unit.", "Valor Total"]; 
                 const tableRows = servicosOrdenados.map(s => {
                     const valorUnitario = (s.valor && s.quantidade > 0) ? (s.valor / s.quantidade) : 0;
                     return [new Date(s.data).toLocaleDateString('pt-BR', {timeZone: 'UTC'}), s.descricao, s.quantidade, formatCurrency(valorUnitario, 4), formatCurrency(s.valor)];
                 });
-                doc.autoTable({ head: [tableColumn], body: tableRows, startY: 45, theme: 'grid', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 0: { halign: 'center', cellWidth: 25 }, 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
+                doc.autoTable({ head: [tableColumn], body: tableRows, startY: startY, theme: 'grid', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 0: { halign: 'center', cellWidth: 25 }, 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
                 doc.save(`Relatorio-Servicos-${cliente.nome}.pdf`);
             };
              const gerarPDFRelatorioProdutos = () => {

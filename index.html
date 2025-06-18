@@ -664,8 +664,7 @@
                 doc.autoTable({ head: [tableColumn], body: tableRows, startY: 45, theme: 'grid', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 0: { halign: 'center', cellWidth: 25 }, 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
                 doc.save(`Relatorio-Servicos-${cliente.nome}.pdf`);
             };
-
-            const gerarPDFRelatorioProdutos = () => {
+             const gerarPDFRelatorioProdutos = () => {
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ orientation: 'landscape' });
                 doc.setFontSize(18).text("Relatório de Produtos Cadastrados", 14, 22);

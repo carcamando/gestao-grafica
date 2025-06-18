@@ -130,8 +130,9 @@
                             <div class="md:col-span-2"><label for="cliente-cnpj" class="block text-sm font-medium">CNPJ</label><input type="text" id="cliente-cnpj" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                             <div class="md:col-span-2"><label for="cliente-ie" class="block text-sm font-medium">Inscr. Est.</label><input type="text" id="cliente-ie" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                             <div class="md:col-span-6"><label for="cliente-email" class="block text-sm font-medium">Email (Opcional)</label><input type="email" id="cliente-email" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                            <div class="md:col-span-4"><label for="cliente-endereco" class="block text-sm font-medium">Endereço</label><input type="text" id="cliente-endereco" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                            <div class="md:col-span-2"><label for="cliente-numero" class="block text-sm font-medium">Número</label><input type="text" id="cliente-numero" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-3"><label for="cliente-endereco" class="block text-sm font-medium">Endereço</label><input type="text" id="cliente-endereco" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-2"><label for="cliente-bairro" class="block text-sm font-medium">Bairro</label><input type="text" id="cliente-bairro" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-1"><label for="cliente-numero" class="block text-sm font-medium">Número</label><input type="text" id="cliente-numero" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                             <div class="md:col-span-2"><label for="cliente-cep" class="block text-sm font-medium">CEP</label><input type="text" id="cliente-cep" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                             <div class="md:col-span-3"><label for="cliente-cidade" class="block text-sm font-medium">Cidade</label><input type="text" id="cliente-cidade" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                             <div class="md:col-span-1"><label for="cliente-uf" class="block text-sm font-medium">UF</label><input type="text" id="cliente-uf" maxlength="2" class="mt-1 block w-full rounded-md border border-gray-400"></div>
@@ -191,8 +192,9 @@
                 <div class="md:col-span-2"><label for="edit-cliente-cnpj" class="block text-sm font-medium">CNPJ</label><input type="text" id="edit-cliente-cnpj" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                 <div class="md:col-span-2"><label for="edit-cliente-ie" class="block text-sm font-medium">Inscr. Est.</label><input type="text" id="edit-cliente-ie" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                 <div class="md:col-span-6"><label for="edit-cliente-email" class="block text-sm font-medium">Email</label><input type="email" id="edit-cliente-email" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                <div class="md:col-span-4"><label for="edit-cliente-endereco" class="block text-sm font-medium">Endereço</label><input type="text" id="edit-cliente-endereco" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                <div class="md:col-span-2"><label for="edit-cliente-numero" class="block text-sm font-medium">Número</label><input type="text" id="edit-cliente-numero" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-3"><label for="edit-cliente-endereco" class="block text-sm font-medium">Endereço</label><input type="text" id="edit-cliente-endereco" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-2"><label for="edit-cliente-bairro" class="block text-sm font-medium">Bairro</label><input type="text" id="edit-cliente-bairro" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-1"><label for="edit-cliente-numero" class="block text-sm font-medium">Número</label><input type="text" id="edit-cliente-numero" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                 <div class="md:col-span-2"><label for="edit-cliente-cep" class="block text-sm font-medium">CEP</label><input type="text" id="edit-cliente-cep" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                 <div class="md:col-span-3"><label for="edit-cliente-cidade" class="block text-sm font-medium">Cidade</label><input type="text" id="edit-cliente-cidade" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                 <div class="md:col-span-1"><label for="edit-cliente-uf" class="block text-sm font-medium">UF</label><input type="text" id="edit-cliente-uf" maxlength="2" class="mt-1 block w-full rounded-md border border-gray-400"></div>
@@ -437,7 +439,7 @@
             
             tabButtons.forEach(button => button.addEventListener('click', () => { tabButtons.forEach(btn => btn.classList.remove('active')); button.classList.add('active'); tabContents.forEach(content => content.style.display = 'none'); document.getElementById(button.dataset.target).style.display = 'block'; }));
 
-            formCliente.addEventListener('submit', e => { e.preventDefault(); clientes.push({ id: Date.now(), nome: e.target.elements['cliente-nome'].value, telefone: e.target.elements['cliente-telefone'].value, email: e.target.elements['cliente-email'].value, cpf: e.target.elements['cliente-cpf'].value, cnpj: e.target.elements['cliente-cnpj'].value, ie: e.target.elements['cliente-ie'].value, endereco: e.target.elements['cliente-endereco'].value, numero: e.target.elements['cliente-numero'].value, cep: e.target.elements['cliente-cep'].value, cidade: e.target.elements['cliente-cidade'].value, uf: e.target.elements['cliente-uf'].value, servicos: [] }); salvarDados(); renderizarClientes(); formCliente.reset(); });
+            formCliente.addEventListener('submit', e => { e.preventDefault(); clientes.push({ id: Date.now(), nome: e.target.elements['cliente-nome'].value, telefone: e.target.elements['cliente-telefone'].value, email: e.target.elements['cliente-email'].value, cpf: e.target.elements['cliente-cpf'].value, cnpj: e.target.elements['cliente-cnpj'].value, ie: e.target.elements['cliente-ie'].value, endereco: e.target.elements['cliente-endereco'].value, bairro: e.target.elements['cliente-bairro'].value, numero: e.target.elements['cliente-numero'].value, cep: e.target.elements['cliente-cep'].value, cidade: e.target.elements['cliente-cidade'].value, uf: e.target.elements['cliente-uf'].value, servicos: [] }); salvarDados(); renderizarClientes(); formCliente.reset(); });
             formProduto.addEventListener('submit', e => { e.preventDefault(); produtos.push({ id: Date.now(), nome: e.target.elements['produto-nome'].value, quantidade: parseInt(e.target.elements['produto-quantidade'].value, 10) || 1, valor: parseFloat(e.target.elements['produto-valor'].value) || 0, formato: e.target.elements['produto-formato'].value, cor: e.target.elements['produto-cor'].value, papel: e.target.elements['produto-papel'].value, acabamento: e.target.elements['produto-acabamento'].value }); salvarDados(); renderizarProdutos(); formProduto.reset(); });
 
             searchClienteInput.addEventListener('keyup', renderizarClientes);
@@ -457,6 +459,7 @@
                     formEditCliente.elements['edit-cliente-ie'].value = cliente.ie || '';
                     formEditCliente.elements['edit-cliente-email'].value = cliente.email || '';
                     formEditCliente.elements['edit-cliente-endereco'].value = cliente.endereco || '';
+                    formEditCliente.elements['edit-cliente-bairro'].value = cliente.bairro || '';
                     formEditCliente.elements['edit-cliente-numero'].value = cliente.numero || '';
                     formEditCliente.elements['edit-cliente-cep'].value = cliente.cep || '';
                     formEditCliente.elements['edit-cliente-cidade'].value = cliente.cidade || '';
@@ -484,6 +487,7 @@
                     cliente.ie = formEditCliente.elements['edit-cliente-ie'].value;
                     cliente.email = formEditCliente.elements['edit-cliente-email'].value;
                     cliente.endereco = formEditCliente.elements['edit-cliente-endereco'].value;
+                    cliente.bairro = formEditCliente.elements['edit-cliente-bairro'].value;
                     cliente.numero = formEditCliente.elements['edit-cliente-numero'].value;
                     cliente.cep = formEditCliente.elements['edit-cliente-cep'].value;
                     cliente.cidade = formEditCliente.elements['edit-cliente-cidade'].value;

@@ -78,7 +78,7 @@
                 <nav class="flex flex-wrap -mb-px">
                     <button class="tab-button py-4 px-6 border-b-2 border-transparent text-lg text-gray-500 hover:text-blue-600 focus:outline-none active" data-target="orcamentos">Orçamentos</button>
                     <button class="tab-button py-4 px-6 border-b-2 border-transparent text-lg text-gray-500 hover:text-blue-600 focus:outline-none" data-target="clientes">Clientes</button>
-                    <button class="tab-button py-4 px-6 border-b-2 border-transparent text-lg text-gray-500 hover:text-blue-600 focus:outline-none" data-target="produtos">Produtos</button>
+                    <button class="tab-button py-4 px-6 border-b-2 border-transparent text-lg text-gray-500 hover:text-blue-600 focus:outline-none" data-target="servicos-cadastrados">Serviços</button>
                 </nav>
             </div>
 
@@ -96,7 +96,7 @@
                             <fieldset class="border p-4 rounded-md mb-4">
                                 <legend class="text-lg font-medium text-gray-800 px-2">Adicionar Itens</legend>
                                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4" id="form-item-container">
-                                    <div class="md:col-span-4"><label for="item-produto" class="block text-sm font-medium">Produto</label><select id="item-produto" class="mt-1 block w-full rounded-md border border-gray-400"></select></div>
+                                    <div class="md:col-span-4"><label for="item-servico" class="block text-sm font-medium">Serviço</label><select id="item-servico" class="mt-1 block w-full rounded-md border border-gray-400"></select></div>
                                     <div class="md:col-span-8"><label for="item-descricao" class="block text-sm font-medium">Descrição</label><input type="text" id="item-descricao" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                                     <div class="md:col-span-4"><label for="item-quantidade" class="block text-sm font-medium">Qtd.</label><input type="number" id="item-quantidade" min="1" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                                     <div class="md:col-span-4"><label for="item-valor-unitario" class="block text-sm font-medium">Valor Unit. (R$)</label><input type="number" step="0.01" id="item-valor-unitario" min="0" class="mt-1 block w-full rounded-md border border-gray-400"></div>
@@ -147,31 +147,31 @@
                     </div>
                 </section>
 
-                <!-- Seção de Produtos -->
-                <section id="produtos" class="tab-content" style="display: none;">
+                <!-- Seção de Serviços -->
+                <section id="servicos-cadastrados" class="tab-content" style="display: none;">
                     <div class="bg-white p-6 rounded-lg shadow-md">
-                        <h2 class="text-2xl font-bold mb-4 text-gray-700">Novo Produto</h2>
-                        <form id="form-produto" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="md:col-span-3"><label for="produto-nome" class="block text-sm font-medium">Nome do Produto</label><input type="text" id="produto-nome" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                            <div><label for="produto-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" id="produto-quantidade" min="1" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                            <div><label for="produto-formato" class="block text-sm font-medium">Formato</label><input type="text" id="produto-formato" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                            <div><label for="produto-cor" class="block text-sm font-medium">Cor Impressão</label><input type="text" id="produto-cor" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                            <div class="md:col-span-2"><label for="produto-papel" class="block text-sm font-medium">Tipo de Papel</label><input type="text" id="produto-papel" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                            <div class="md:col-span-2"><label for="produto-acabamento" class="block text-sm font-medium">Acabamento</label><input type="text" id="produto-acabamento" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                            <div class="md:col-span-1"><label for="produto-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" id="produto-valor" min="0" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                            <div class="md:col-span-3"><button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Adicionar Produto</button></div>
+                        <h2 class="text-2xl font-bold mb-4 text-gray-700">Novo Serviço</h2>
+                        <form id="form-servico-cadastro" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="md:col-span-3"><label for="servico-cadastro-nome" class="block text-sm font-medium">Nome do Serviço</label><input type="text" id="servico-cadastro-nome" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div><label for="servico-cadastro-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" id="servico-cadastro-quantidade" min="1" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div><label for="servico-cadastro-formato" class="block text-sm font-medium">Formato</label><input type="text" id="servico-cadastro-formato" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div><label for="servico-cadastro-cor" class="block text-sm font-medium">Cor Impressão</label><input type="text" id="servico-cadastro-cor" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-2"><label for="servico-cadastro-papel" class="block text-sm font-medium">Tipo de Papel</label><input type="text" id="servico-cadastro-papel" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-2"><label for="servico-cadastro-acabamento" class="block text-sm font-medium">Acabamento</label><input type="text" id="servico-cadastro-acabamento" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-1"><label for="servico-cadastro-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" id="servico-cadastro-valor" min="0" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                            <div class="md:col-span-3"><button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Adicionar Serviço</button></div>
                         </form>
                     </div>
                     <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
                         <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-2xl font-bold text-gray-700">Produtos Cadastrados</h3>
-                            <button id="gerar-relatorio-produtos-btn" class="bg-purple-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-purple-700 text-sm">Relatório de Produtos</button>
+                            <h3 class="text-2xl font-bold text-gray-700">Serviços Cadastrados</h3>
+                            <button id="gerar-relatorio-servicos-cadastrados-btn" class="bg-purple-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-purple-700 text-sm">Relatório de Serviços</button>
                         </div>
                          <div class="mb-4">
-                            <label for="search-produto-input" class="block text-sm font-medium text-gray-700">Pesquisar por Nome</label>
-                            <input type="text" id="search-produto-input" placeholder="Digite o nome do produto..." class="mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <label for="search-servico-input" class="block text-sm font-medium text-gray-700">Pesquisar por Nome</label>
+                            <input type="text" id="search-servico-input" placeholder="Digite o nome do serviço..." class="mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
-                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Formato</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Papel</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Valor Total</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-produtos" class="bg-white divide-y"></tbody></table></div>
+                        <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Formato</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Papel</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Valor Total</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th></tr></thead><tbody id="lista-servicos-cadastrados" class="bg-white divide-y"></tbody></table></div>
                     </div>
                 </section>
             </main>
@@ -203,21 +203,21 @@
         </div>
     </div>
     
-    <!-- Modal de Edição de Produto -->
-    <div id="edit-produto-modal" class="modal-backdrop">
+    <!-- Modal de Edição de Serviço Cadastrado -->
+    <div id="edit-servico-cadastro-modal" class="modal-backdrop">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-6">
-                 <h2 class="text-2xl font-bold text-gray-700">Editar Produto</h2>
-                 <button id="close-edit-produto-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+                 <h2 class="text-2xl font-bold text-gray-700">Editar Serviço</h2>
+                 <button id="close-edit-servico-cadastro-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             </div>
-            <form id="form-edit-produto" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="md:col-span-2"><label for="edit-produto-nome" class="block text-sm font-medium">Nome do Produto</label><input type="text" id="edit-produto-nome" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                <div><label for="edit-produto-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" id="edit-produto-quantidade" min="1" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                <div><label for="edit-produto-formato" class="block text-sm font-medium">Formato</label><input type="text" id="edit-produto-formato" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                <div><label for="edit-produto-cor" class="block text-sm font-medium">Cor Impressão</label><input type="text" id="edit-produto-cor" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                <div><label for="edit-produto-papel" class="block text-sm font-medium">Tipo de Papel</label><input type="text" id="edit-produto-papel" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                <div class="md:col-span-2"><label for="edit-produto-acabamento" class="block text-sm font-medium">Acabamento</label><input type="text" id="edit-produto-acabamento" class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                <div class="md:col-span-2"><label for="edit-produto-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" id="edit-produto-valor" min="0" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+            <form id="form-edit-servico-cadastro" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2"><label for="edit-servico-cadastro-nome" class="block text-sm font-medium">Nome do Serviço</label><input type="text" id="edit-servico-cadastro-nome" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-servico-cadastro-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" id="edit-servico-cadastro-quantidade" min="1" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-servico-cadastro-formato" class="block text-sm font-medium">Formato</label><input type="text" id="edit-servico-cadastro-formato" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-servico-cadastro-cor" class="block text-sm font-medium">Cor Impressão</label><input type="text" id="edit-servico-cadastro-cor" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-servico-cadastro-papel" class="block text-sm font-medium">Tipo de Papel</label><input type="text" id="edit-servico-cadastro-papel" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-2"><label for="edit-servico-cadastro-acabamento" class="block text-sm font-medium">Acabamento</label><input type="text" id="edit-servico-cadastro-acabamento" class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div class="md:col-span-2"><label for="edit-servico-cadastro-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" id="edit-servico-cadastro-valor" min="0" class="mt-1 block w-full rounded-md border border-gray-400"></div>
                 <div class="md:col-span-2"><button type="submit" class="w-full bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600">Salvar Alterações</button></div>
             </form>
         </div>
@@ -250,18 +250,18 @@
         </div>
     </div>
     
-     <!-- Modal de Edição de Serviço -->
-    <div id="edit-servico-modal" class="modal-backdrop">
+     <!-- Modal de Edição de Serviço do Cliente -->
+    <div id="edit-servico-cliente-modal" class="modal-backdrop">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-6">
                  <h2 class="text-2xl font-bold text-gray-700">Editar Serviço</h2>
-                 <button id="close-edit-servico-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+                 <button id="close-edit-servico-cliente-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             </div>
-            <form id="form-edit-servico" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="md:col-span-3"><label for="edit-servico-descricao-input" class="block text-sm font-medium">Serviço/Descrição</label><input type="text" id="edit-servico-descricao-input" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                <div><label for="edit-servico-data" class="block text-sm font-medium">Data</label><input type="date" id="edit-servico-data" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                <div><label for="edit-servico-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" min="1" id="edit-servico-quantidade" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
-                <div><label for="edit-servico-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" min="0" id="edit-servico-valor" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+            <form id="form-edit-servico-cliente" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="md:col-span-3"><label for="edit-servico-cliente-descricao-input" class="block text-sm font-medium">Serviço/Descrição</label><input type="text" id="edit-servico-cliente-descricao-input" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-servico-cliente-data" class="block text-sm font-medium">Data</label><input type="date" id="edit-servico-cliente-data" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-servico-cliente-quantidade" class="block text-sm font-medium">Quantidade</label><input type="number" min="1" id="edit-servico-cliente-quantidade" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
+                <div><label for="edit-servico-cliente-valor" class="block text-sm font-medium">Valor Total (R$)</label><input type="number" step="0.01" min="0" id="edit-servico-cliente-valor" required class="mt-1 block w-full rounded-md border border-gray-400"></div>
                 <div class="md:col-span-3"><button type="submit" class="w-full bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600">Salvar Alterações</button></div>
             </form>
         </div>
@@ -332,22 +332,22 @@
         });
 
         function runApp() {
-            let clientes = [], produtos = [], orcamentos = [], currentItems = [];
-            let orcamentoCounter = 1, servicoCounter = 1, activeClientId = null, editingBudgetId = null, editingClientId = null, editingProductId = null, editingServiceId = null;
+            let clientes = [], servicosCadastrados = [], orcamentos = [], currentItems = [];
+            let orcamentoCounter = 1, servicoCounter = 1, activeClientId = null, editingBudgetId = null, editingClientId = null, editingServicoCadastradoId = null, editingServicoClienteId = null;
             
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
             const formCliente = document.getElementById('form-cliente');
             const listaClientes = document.getElementById('lista-clientes');
             const searchClienteInput = document.getElementById('search-cliente-input');
-            const formProduto = document.getElementById('form-produto');
-            const listaProdutos = document.getElementById('lista-produtos');
-            const searchProdutoInput = document.getElementById('search-produto-input');
+            const formServicoCadastro = document.getElementById('form-servico-cadastro');
+            const listaServicosCadastrados = document.getElementById('lista-servicos-cadastrados');
+            const searchServicoInput = document.getElementById('search-servico-input');
             const formOrcamento = document.getElementById('form-orcamento');
             const listaOrcamentos = document.getElementById('lista-orcamentos');
             const searchOrcamentoInput = document.getElementById('search-orcamento-input');
             const selectOrcamentoCliente = document.getElementById('orcamento-cliente');
-            const selectItemProduto = document.getElementById('item-produto');
+            const selectItemServico = document.getElementById('item-servico');
             const addItemBtn = document.getElementById('add-item-btn');
             const currentItemsContainer = document.getElementById('current-orcamento-items-container');
             const currentTotalSpan = document.getElementById('current-orcamento-total');
@@ -361,18 +361,18 @@
             const editClienteModal = document.getElementById('edit-cliente-modal');
             const formEditCliente = document.getElementById('form-edit-cliente');
             const closeEditClienteModalBtn = document.getElementById('close-edit-cliente-modal-btn');
-            const editProdutoModal = document.getElementById('edit-produto-modal');
-            const formEditProduto = document.getElementById('form-edit-produto');
-            const closeEditProdutoModalBtn = document.getElementById('close-edit-produto-modal-btn');
-            const editServicoModal = document.getElementById('edit-servico-modal');
-            const formEditServico = document.getElementById('form-edit-servico');
-            const closeEditServicoModalBtn = document.getElementById('close-edit-servico-modal-btn');
+            const editServicoCadastroModal = document.getElementById('edit-servico-cadastro-modal');
+            const formEditServicoCadastro = document.getElementById('form-edit-servico-cadastro');
+            const closeEditServicoCadastroModalBtn = document.getElementById('close-edit-servico-cadastro-modal-btn');
+            const editServicoClienteModal = document.getElementById('edit-servico-cliente-modal');
+            const formEditServicoCliente = document.getElementById('form-edit-servico-cliente');
+            const closeEditServicoClienteModalBtn = document.getElementById('close-edit-servico-cliente-modal-btn');
             const gerarRelatorioProdutosBtn = document.getElementById('gerar-relatorio-produtos-btn');
             
             const docRef = doc(db, "data", userId);
 
             const salvarDados = async () => {
-                const dataToSave = { clientes, produtos, orcamentos, orcamentoCounter, servicoCounter };
+                const dataToSave = { clientes, produtos: servicosCadastrados, orcamentos, orcamentoCounter, servicoCounter };
                 try {
                     await setDoc(docRef, dataToSave);
                 } catch (e) { console.error("Erro ao salvar dados: ", e); }
@@ -384,7 +384,7 @@
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         clientes = data.clientes || [];
-                        produtos = data.produtos || [];
+                        servicosCadastrados = data.produtos || []; // Mantendo a chave antiga por compatibilidade
                         orcamentos = data.orcamentos || [];
                         orcamentoCounter = data.orcamentoCounter || 1;
                         servicoCounter = data.servicoCounter || 1;
@@ -398,15 +398,15 @@
                 return `R$ ${parseFloat(value).toFixed(decimals).replace('.', ',')}`;
             }
 
-            const renderizarTudo = () => { renderizarClientes(); renderizarProdutos(); renderizarOrcamentos(); };
+            const renderizarTudo = () => { renderizarClientes(); renderizarServicosCadastrados(); renderizarOrcamentos(); };
             const atualizarSelects = () => {
                 selectOrcamentoCliente.innerHTML = '<option value="" disabled selected>Selecione...</option>';
                 const clientesOrdenados = [...clientes].sort((a, b) => a.nome.localeCompare(b.nome));
                 clientesOrdenados.forEach((c) => selectOrcamentoCliente.add(new Option(c.nome, c.id)));
                 
-                selectItemProduto.innerHTML = '<option value="" disabled selected>Selecione...</option>';
-                const produtosOrdenados = [...produtos].sort((a, b) => a.nome.localeCompare(b.nome));
-                produtosOrdenados.forEach((p) => selectItemProduto.add(new Option(p.nome, p.id)));
+                selectItemServico.innerHTML = '<option value="" disabled selected>Selecione...</option>';
+                const servicosOrdenados = [...servicosCadastrados].sort((a, b) => a.nome.localeCompare(b.nome));
+                servicosOrdenados.forEach((p) => selectItemServico.add(new Option(p.nome, p.id)));
             };
 
             const renderizarClientes = () => {
@@ -417,11 +417,11 @@
                 atualizarSelects();
             };
 
-            const renderizarProdutos = () => {
-                const searchTerm = searchProdutoInput.value.toLowerCase();
-                let filteredProdutos = produtos.filter(p => p.nome.toLowerCase().includes(searchTerm));
-                filteredProdutos.sort((a, b) => a.nome.localeCompare(b.nome));
-                listaProdutos.innerHTML = filteredProdutos.length === 0 ? '<tr><td colspan="5" class="text-center py-4 text-gray-500">Nenhum produto</td></tr>' : filteredProdutos.map(p => `<tr id="produto-${p.id}" class="hover:bg-gray-50"><td class="px-6 py-4">${p.nome}</td><td class="px-6 py-4">${p.formato||'N/A'}</td><td class="px-6 py-4">${p.papel||'N/A'}</td><td class="px-6 py-4">${formatCurrency(p.valor)}</td><td class="px-6 py-4"><div class="flex items-center space-x-2"><button data-id="${p.id}" class="edit-produto-btn text-blue-600 hover:text-blue-900">Editar</button><button data-id="${p.id}" class="delete-produto-btn text-red-600 hover:text-red-900">Excluir</button></div></td></tr>`).join('');
+            const renderizarServicosCadastrados = () => {
+                const searchTerm = searchServicoInput.value.toLowerCase();
+                let filteredServicos = servicosCadastrados.filter(p => p.nome.toLowerCase().includes(searchTerm));
+                filteredServicos.sort((a, b) => a.nome.localeCompare(b.nome));
+                listaServicosCadastrados.innerHTML = filteredServicos.length === 0 ? '<tr><td colspan="5" class="text-center py-4 text-gray-500">Nenhum serviço</td></tr>' : filteredServicos.map(p => `<tr id="servico-cadastrado-${p.id}" class="hover:bg-gray-50"><td class="px-6 py-4">${p.nome}</td><td class="px-6 py-4">${p.formato||'N/A'}</td><td class="px-6 py-4">${p.papel||'N/A'}</td><td class="px-6 py-4">${formatCurrency(p.valor)}</td><td class="px-6 py-4"><div class="flex items-center space-x-2"><button data-id="${p.id}" class="edit-servico-cadastro-btn text-blue-600 hover:text-blue-900">Editar</button><button data-id="${p.id}" class="delete-servico-cadastro-btn text-red-600 hover:text-red-900">Excluir</button></div></td></tr>`).join('');
                 atualizarSelects();
             };
             
@@ -440,10 +440,10 @@
             tabButtons.forEach(button => button.addEventListener('click', () => { tabButtons.forEach(btn => btn.classList.remove('active')); button.classList.add('active'); tabContents.forEach(content => content.style.display = 'none'); document.getElementById(button.dataset.target).style.display = 'block'; }));
 
             formCliente.addEventListener('submit', e => { e.preventDefault(); clientes.push({ id: Date.now(), nome: e.target.elements['cliente-nome'].value, telefone: e.target.elements['cliente-telefone'].value, email: e.target.elements['cliente-email'].value, cpf: e.target.elements['cliente-cpf'].value, cnpj: e.target.elements['cliente-cnpj'].value, ie: e.target.elements['cliente-ie'].value, endereco: e.target.elements['cliente-endereco'].value, bairro: e.target.elements['cliente-bairro'].value, numero: e.target.elements['cliente-numero'].value, cep: e.target.elements['cliente-cep'].value, cidade: e.target.elements['cliente-cidade'].value, uf: e.target.elements['cliente-uf'].value, servicos: [] }); salvarDados(); renderizarClientes(); formCliente.reset(); });
-            formProduto.addEventListener('submit', e => { e.preventDefault(); produtos.push({ id: Date.now(), nome: e.target.elements['produto-nome'].value, quantidade: parseInt(e.target.elements['produto-quantidade'].value, 10) || 1, valor: parseFloat(e.target.elements['produto-valor'].value) || 0, formato: e.target.elements['produto-formato'].value, cor: e.target.elements['produto-cor'].value, papel: e.target.elements['produto-papel'].value, acabamento: e.target.elements['produto-acabamento'].value }); salvarDados(); renderizarProdutos(); formProduto.reset(); });
+            formServicoCadastro.addEventListener('submit', e => { e.preventDefault(); servicosCadastrados.push({ id: Date.now(), nome: e.target.elements['servico-cadastro-nome'].value, quantidade: parseInt(e.target.elements['servico-cadastro-quantidade'].value, 10) || 1, valor: parseFloat(e.target.elements['servico-cadastro-valor'].value) || 0, formato: e.target.elements['servico-cadastro-formato'].value, cor: e.target.elements['servico-cadastro-cor'].value, papel: e.target.elements['servico-cadastro-papel'].value, acabamento: e.target.elements['servico-cadastro-acabamento'].value }); salvarDados(); renderizarServicosCadastrados(); formServicoCadastro.reset(); });
 
             searchClienteInput.addEventListener('keyup', renderizarClientes);
-            searchProdutoInput.addEventListener('keyup', renderizarProdutos);
+            searchProdutoInput.addEventListener('keyup', renderizarServicosCadastrados);
             searchOrcamentoInput.addEventListener('keyup', renderizarOrcamentos);
 
             listaClientes.addEventListener('click', e => {
@@ -498,9 +498,9 @@
                 }
             });
 
-            selectItemProduto.addEventListener('change', e => {
+            selectItemServico.addEventListener('change', e => {
                 if (e.target.value === "") return;
-                const p = produtos.find(p => p.id === parseInt(e.target.value));
+                const p = servicosCadastrados.find(p => p.id === parseInt(e.target.value));
                 if (p) {
                     const descricaoDetalhada = `Formato: ${p.formato || ''}, Cor: ${p.cor || ''}, Papel: ${p.papel || ''}, Acabamento: ${p.acabamento || ''}`;
                     document.getElementById('item-descricao').value = descricaoDetalhada.replace(/,(\s*,)+/g, ',').replace(/^,|,$/g, '').trim();
@@ -511,10 +511,10 @@
             });
 
             addItemBtn.addEventListener('click', () => {
-                const pIndex = selectItemProduto.value; if (pIndex === "") { alert('Selecione um produto.'); return; }
-                const produto = produtos.find(p => p.id === parseInt(pIndex)); const quantidade = parseInt(document.getElementById('item-quantidade').value, 10); const valorUnitario = parseFloat(document.getElementById('item-valor-unitario').value);
+                const pIndex = selectItemServico.value; if (pIndex === "") { alert('Selecione um serviço.'); return; }
+                const servicoCadastrado = servicosCadastrados.find(p => p.id === parseInt(pIndex)); const quantidade = parseInt(document.getElementById('item-quantidade').value, 10); const valorUnitario = parseFloat(document.getElementById('item-valor-unitario').value);
                 if (!quantidade || isNaN(valorUnitario)) { alert('Preencha a quantidade e o valor corretamente.'); return; }
-                currentItems.push({ nome: produto.nome, descricao: document.getElementById('item-descricao').value, quantidade: quantidade, valorUnitario: valorUnitario, valorTotal: quantidade * valorUnitario });
+                currentItems.push({ nome: servicoCadastrado.nome, descricao: document.getElementById('item-descricao').value, quantidade: quantidade, valorUnitario: valorUnitario, valorTotal: quantidade * valorUnitario });
                 renderizarCurrentItems();
                 document.getElementById('form-item-container').querySelectorAll('input, select').forEach(el => { if (el.tagName === 'SELECT') { el.selectedIndex = 0; } else { el.value = ''; } });
             });
@@ -557,38 +557,38 @@
                 }
             });
 
-            listaProdutos.addEventListener('click', e => {
+            listaServicosCadastrados.addEventListener('click', e => {
                 const btn = e.target.closest('button'); if (!btn) return;
                 const id = parseInt(btn.dataset.id);
-                if (btn.classList.contains('edit-produto-btn')) { 
-                    editingProductId = id;
-                    const produto = produtos.find(p => p.id === id);
-                    formEditProduto.elements['edit-produto-nome'].value = produto.nome || '';
-                    formEditProduto.elements['edit-produto-quantidade'].value = produto.quantidade || '';
-                    formEditProduto.elements['edit-produto-valor'].value = produto.valor || '';
-                    formEditProduto.elements['edit-produto-formato'].value = produto.formato || '';
-                    formEditProduto.elements['edit-produto-cor'].value = produto.cor || '';
-                    formEditProduto.elements['edit-produto-papel'].value = produto.papel || '';
-                    formEditProduto.elements['edit-produto-acabamento'].value = produto.acabamento || '';
-                    editProdutoModal.classList.add('visible');
-                } else if (btn.classList.contains('delete-produto-btn')) { produtos = produtos.filter(p => p.id !== id); salvarDados(); renderizarProdutos(); }
+                if (btn.classList.contains('edit-servico-cadastro-btn')) { 
+                    editingServicoCadastradoId = id;
+                    const servico = servicosCadastrados.find(p => p.id === id);
+                    formEditServicoCadastro.elements['edit-servico-cadastro-nome'].value = servico.nome || '';
+                    formEditServicoCadastro.elements['edit-servico-cadastro-quantidade'].value = servico.quantidade || '';
+                    formEditServicoCadastro.elements['edit-servico-cadastro-valor'].value = servico.valor || '';
+                    formEditServicoCadastro.elements['edit-servico-cadastro-formato'].value = servico.formato || '';
+                    formEditServicoCadastro.elements['edit-servico-cadastro-cor'].value = servico.cor || '';
+                    formEditServicoCadastro.elements['edit-servico-cadastro-papel'].value = servico.papel || '';
+                    formEditServicoCadastro.elements['edit-servico-cadastro-acabamento'].value = servico.acabamento || '';
+                    editServicoCadastroModal.classList.add('visible');
+                } else if (btn.classList.contains('delete-servico-cadastro-btn')) { servicosCadastrados = servicosCadastrados.filter(p => p.id !== id); salvarDados(); renderizarServicosCadastrados(); }
             });
             
-            closeEditProdutoModalBtn.addEventListener('click', () => editProdutoModal.classList.remove('visible'));
-            formEditProduto.addEventListener('submit', (e) => {
+            closeEditServicoCadastroModalBtn.addEventListener('click', () => editServicoCadastroModal.classList.remove('visible'));
+            formEditServicoCadastro.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const produto = produtos.find(p => p.id === editingProductId);
-                if(produto) {
-                    produto.nome = formEditProduto.elements['edit-produto-nome'].value;
-                    produto.quantidade = parseInt(formEditProduto.elements['edit-produto-quantidade'].value, 10);
-                    produto.valor = parseFloat(formEditProduto.elements['edit-produto-valor'].value);
-                    produto.formato = formEditProduto.elements['edit-produto-formato'].value;
-                    produto.cor = formEditProduto.elements['edit-produto-cor'].value;
-                    produto.papel = formEditProduto.elements['edit-produto-papel'].value;
-                    produto.acabamento = formEditProduto.elements['edit-produto-acabamento'].value;
+                const servico = servicosCadastrados.find(p => p.id === editingServicoCadastradoId);
+                if(servico) {
+                    servico.nome = formEditServicoCadastro.elements['edit-servico-cadastro-nome'].value;
+                    servico.quantidade = parseInt(formEditServicoCadastro.elements['edit-servico-cadastro-quantidade'].value, 10);
+                    servico.valor = parseFloat(formEditServicoCadastro.elements['edit-servico-cadastro-valor'].value);
+                    servico.formato = formEditServicoCadastro.elements['edit-servico-cadastro-formato'].value;
+                    servico.cor = formEditServicoCadastro.elements['edit-servico-cadastro-cor'].value;
+                    servico.papel = formEditServicoCadastro.elements['edit-servico-cadastro-papel'].value;
+                    servico.acabamento = formEditServicoCadastro.elements['edit-servico-cadastro-acabamento'].value;
                     salvarDados();
-                    renderizarProdutos();
-                    editProdutoModal.classList.remove('visible');
+                    renderizarServicosCadastrados();
+                    editServicoCadastroModal.classList.remove('visible');
                 }
             });
             
@@ -604,7 +604,7 @@
                     listaServicosContainer.innerHTML = '<p class="text-center py-4 text-gray-500">Nenhum serviço cadastrado.</p>';
                 } else {
                     relatorioBtn.style.display = 'inline-block';
-                    listaServicosContainer.innerHTML = `<table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="p-2 text-left text-xs font-medium uppercase">Serviço</th><th class="p-2 text-left text-xs font-medium uppercase">Data</th><th class="p-2 text-left text-xs font-medium uppercase">Qtd.</th><th class="p-2 text-left text-xs font-medium uppercase">Valor</th><th class="p-2 text-left text-xs font-medium uppercase">Anexo</th><th class="p-2 text-left text-xs font-medium uppercase">Ações</th></tr></thead><tbody>${servicosOrdenados.map(s=>`<tr id="servico-${s.id}"><td class="p-2">${s.descricao}</td><td class="p-2">${new Date(s.data).toLocaleDateString('pt-BR',{timeZone:'UTC'})}</td><td class="p-2">${s.quantidade}</td><td class="p-2">${formatCurrency(s.valor)}</td><td class="p-2">${s.anexo?`<a href="${s.anexo.dados}" download="${s.anexo.nome}" class="text-blue-600">Baixar</a>`:'N/A'}</td><td class="p-2"><div class="flex items-center space-x-2"><button data-servico-id="${s.id}" class="edit-servico-btn text-blue-600">Editar</button><button data-servico-id="${s.id}" class="delete-servico-btn text-red-600">Excluir</button></div></td></tr>`).join('')}</tbody></table>`;
+                    listaServicosContainer.innerHTML = `<table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="p-2 text-left text-xs font-medium uppercase">Serviço</th><th class="p-2 text-left text-xs font-medium uppercase">Data</th><th class="p-2 text-left text-xs font-medium uppercase">Qtd.</th><th class="p-2 text-left text-xs font-medium uppercase">Valor</th><th class="p-2 text-left text-xs font-medium uppercase">Anexo</th><th class="p-2 text-left text-xs font-medium uppercase">Ações</th></tr></thead><tbody>${servicosOrdenados.map(s=>`<tr id="servico-${s.id}"><td class="p-2">${s.descricao}</td><td class="p-2">${new Date(s.data).toLocaleDateString('pt-BR',{timeZone:'UTC'})}</td><td class="p-2">${s.quantidade}</td><td class="p-2">${formatCurrency(s.valor)}</td><td class="p-2">${s.anexo?`<a href="${s.anexo.dados}" download="${s.anexo.nome}" class="text-blue-600">Baixar</a>`:'N/A'}</td><td class="p-2"><div class="flex items-center space-x-2"><button data-servico-id="${s.id}" class="edit-servico-cliente-btn text-blue-600">Editar</button><button data-servico-id="${s.id}" class="delete-servico-btn text-red-600">Excluir</button></div></td></tr>`).join('')}</tbody></table>`;
                 }
             };
             
@@ -621,30 +621,30 @@
                 if (btn.id === 'gerar-relatorio-servicos-btn') { const cliente = clientes.find(c => c.id === activeClientId); if (cliente) gerarPDFRelatorioServicos(cliente); return; }
                 const servicoId = parseInt(btn.dataset.servicoId); if (!servicoId) return;
                 const cliente = clientes.find(c => c.id === activeClientId);
-                if (btn.classList.contains('edit-servico-btn')) { 
-                    editingServiceId = servicoId;
+                if (btn.classList.contains('edit-servico-cliente-btn')) { 
+                    editingServicoClienteId = servicoId;
                     const servico = cliente.servicos.find(s => s.id === servicoId);
-                    formEditServico.elements['edit-servico-descricao-input'].value = servico.descricao || '';
-                    formEditServico.elements['edit-servico-data'].value = servico.data || '';
-                    formEditServico.elements['edit-servico-quantidade'].value = servico.quantidade || '';
-                    formEditServico.elements['edit-servico-valor'].value = servico.valor || '';
-                    editServicoModal.classList.add('visible');
+                    formEditServicoCliente.elements['edit-servico-cliente-descricao-input'].value = servico.descricao || '';
+                    formEditServicoCliente.elements['edit-servico-cliente-data'].value = servico.data || '';
+                    formEditServicoCliente.elements['edit-servico-cliente-quantidade'].value = servico.quantidade || '';
+                    formEditServicoCliente.elements['edit-servico-cliente-valor'].value = servico.valor || '';
+                    editServicoClienteModal.classList.add('visible');
                 } else if (btn.classList.contains('delete-servico-btn')) { cliente.servicos = cliente.servicos.filter(s => s.id !== servicoId); salvarDados(); renderizarServicos(activeClientId);  }
             });
             
-            closeEditServicoModalBtn.addEventListener('click', () => editServicoModal.classList.remove('visible'));
-            formEditServico.addEventListener('submit', (e) => {
+            closeEditServicoClienteModalBtn.addEventListener('click', () => editServicoClienteModal.classList.remove('visible'));
+            formEditServicoCliente.addEventListener('submit', (e) => {
                  e.preventDefault();
                  const cliente = clientes.find(c => c.id === activeClientId);
-                 const servico = cliente.servicos.find(s => s.id === editingServiceId);
+                 const servico = cliente.servicos.find(s => s.id === editingServicoClienteId);
                  if (servico) {
-                    servico.descricao = formEditServico.elements['edit-servico-descricao-input'].value;
-                    servico.data = formEditServico.elements['edit-servico-data'].value;
-                    servico.quantidade = parseInt(formEditServico.elements['edit-servico-quantidade'].value, 10);
-                    servico.valor = parseFloat(formEditServico.elements['edit-servico-valor'].value);
+                    servico.descricao = formEditServicoCliente.elements['edit-servico-cliente-descricao-input'].value;
+                    servico.data = formEditServicoCliente.elements['edit-servico-cliente-data'].value;
+                    servico.quantidade = parseInt(formEditServicoCliente.elements['edit-servico-cliente-quantidade'].value, 10);
+                    servico.valor = parseFloat(formEditServicoCliente.elements['edit-servico-cliente-valor'].value);
                     salvarDados();
                     renderizarServicos(activeClientId);
-                    editServicoModal.classList.remove('visible');
+                    editServicoClienteModal.classList.remove('visible');
                  }
             });
 
@@ -653,7 +653,7 @@
                 doc.setFontSize(18).text("Orçamento - Gráfica Traços Ltda", 14, 22); doc.setFontSize(11).text("Contato: (54) 99617-2271", 14, 30); doc.line(14, 32, 196, 32); doc.setFontSize(12); doc.text(`Data: ${orcamento.data}`, 196, startY, { align: 'right' }); startY += 10; doc.text(`Cliente: ${cliente.nome}`, 14, startY);
                 if (cliente.cpf || cliente.cnpj) { startY += 7; doc.text(`CPF/CNPJ: ${cliente.cpf || cliente.cnpj}`, 14, startY); }
                 if (cliente.endereco) { startY += 7; doc.text(`Endereço: ${[cliente.endereco, cliente.numero, cliente.cidade, cliente.uf.toUpperCase()].filter(Boolean).join(', ')}`, 14, startY); }
-                doc.autoTable({ head: [["Produto", "Descrição", "Qtd.", "Vlr. Unit.", "Vlr. Total"]], body: orcamento.items.map(i => [i.nome, i.descricao, i.quantidade, formatCurrency(i.valorUnitario), formatCurrency(i.valorTotal)]), startY: startY + 5, theme: 'striped', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
+                doc.autoTable({ head: [["Serviço", "Descrição", "Qtd.", "Vlr. Unit.", "Vlr. Total"]], body: orcamento.items.map(i => [i.nome, i.descricao, i.quantidade, formatCurrency(i.valorUnitario), formatCurrency(i.valorTotal)]), startY: startY + 5, theme: 'striped', headStyles: { fillColor: [30, 64, 175] }, columnStyles: { 2: { halign: 'center' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
                 let finalY = doc.lastAutoTable.finalY; doc.setFontSize(14).setFont(undefined, 'bold').text('Total:', 148, finalY + 12, {align: 'right'}); doc.text(formatCurrency(orcamento.total), 196, finalY + 12, {align: 'right'}); doc.setFontSize(10).setFont(undefined, 'normal').text("Orçamento válido por 30 dias.", 14, finalY + 25); doc.save(`Orcamento-${cliente.nome}-${orcamento.data}.pdf`);
             };
             
@@ -671,14 +671,14 @@
              const gerarPDFRelatorioProdutos = () => {
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ orientation: 'landscape' });
-                doc.setFontSize(18).text("Relatório de Produtos Cadastrados", 14, 22);
+                doc.setFontSize(18).text("Relatório de Serviços Cadastrados", 14, 22);
                 doc.setFontSize(11).text("Gráfica Traços Ltda", 14, 30);
                 doc.line(14, 32, 282, 32);
                 doc.setFontSize(12).text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')}`, 282, 40, { align: 'right' });
                 
-                const produtosOrdenados = [...produtos].sort((a, b) => a.nome.localeCompare(b.nome));
+                const produtosOrdenados = [...servicosCadastrados].sort((a, b) => a.nome.localeCompare(b.nome));
                 
-                const tableColumn = ["Nome", "Qtd.", "Formato", "Cor", "Papel", "Acabamento", "Valor Total"];
+                const tableColumn = ["Nome do Serviço", "Qtd.", "Formato", "Cor", "Papel", "Acabamento", "Valor Total"];
                 const tableRows = produtosOrdenados.map(p => [
                     p.nome || 'N/A',
                     p.quantidade || 'N/A',
@@ -697,7 +697,7 @@
                     headStyles: { fillColor: [30, 64, 175] }
                 });
 
-                doc.save(`Relatorio-Produtos-${new Date().toLocaleDateString('pt-BR')}.pdf`);
+                doc.save(`Relatorio-Servicos-${new Date().toLocaleDateString('pt-BR')}.pdf`);
             };
 
             gerarRelatorioProdutosBtn.addEventListener('click', gerarPDFRelatorioProdutos);

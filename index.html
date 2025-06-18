@@ -384,7 +384,7 @@
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         clientes = data.clientes || [];
-                        servicosCadastrados = data.produtos || []; // Mantendo a chave antiga por compatibilidade
+                        servicosCadastrados = data.produtos || []; 
                         orcamentos = data.orcamentos || [];
                         orcamentoCounter = data.orcamentoCounter || 1;
                         servicoCounter = data.servicoCounter || 1;
@@ -443,7 +443,7 @@
             formServicoCadastro.addEventListener('submit', e => { e.preventDefault(); servicosCadastrados.push({ id: Date.now(), nome: e.target.elements['servico-cadastro-nome'].value, quantidade: parseInt(e.target.elements['servico-cadastro-quantidade'].value, 10) || 1, valor: parseFloat(e.target.elements['servico-cadastro-valor'].value) || 0, formato: e.target.elements['servico-cadastro-formato'].value, cor: e.target.elements['servico-cadastro-cor'].value, papel: e.target.elements['servico-cadastro-papel'].value, acabamento: e.target.elements['servico-cadastro-acabamento'].value }); salvarDados(); renderizarServicosCadastrados(); formServicoCadastro.reset(); });
 
             searchClienteInput.addEventListener('keyup', renderizarClientes);
-            searchProdutoInput.addEventListener('keyup', renderizarServicosCadastrados);
+            searchServicoInput.addEventListener('keyup', renderizarServicosCadastrados);
             searchOrcamentoInput.addEventListener('keyup', renderizarOrcamentos);
 
             listaClientes.addEventListener('click', e => {
